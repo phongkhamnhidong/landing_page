@@ -1,0 +1,26 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme inline {
+  /* Colour palette — white & light beige */
+  --color-cream:        #FFFFFF;       /* main background */
+  --color-beige:        #FAF7F2;       /* alternate sections */
+  --color-beige-dark:   #F0E8DC;       /* cards, subtle accents */
+  --color-border:       #E8DDD0;       /* borders */
+  --color-navy:         #1B3A5C;       /* primary */
+  --color-navy-light:   #2A5280;       /* hover */
+  --color-gold:         #B8965A;       /* accent */
+  --color-gold-light:   #D4B483;       /* lighter accent */
+  --color-brown:        #2C1E0F;       /* dark body text */
+  --color-brown-muted:  #6B5040;       /* secondary text */
+
+  /* Typography */
+  --font-serif: var(--font-lora);
+  --font-sans:  var(--font-be-vietnam-pro);
+}
+
+body {
+  background-color: var(--color-cream);
+  color: var(--color-brown);
+  font-family: var(--font-be-vietnam-pro), system-ui, sans-serif;
+}
