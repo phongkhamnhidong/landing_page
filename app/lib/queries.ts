@@ -91,16 +91,34 @@ export const allKienThucQuery = `*[_type == "post" && section == "kienThuc"] | o
   "categorySlug": categories[0]->slug.current
 }`
 
-// Posts by category slug (Kiến Thức)
-export const postsByCategoryQuery = `*[_type == "post" && section == "kienThuc" && $categorySlug in categories[]->slug.current] | order(publishedAt desc){
+// Posts by category slug (Kiến Thức) — paginated
+export const postsByCategoryQuery = `*[_type == "post" && section == "kienThuc" && $categorySlug in categories[]->slug.current] | order(publishedAt desc)[$from...$to]{
+  title,
+  "slug": slug.current,
+  mainImage,
+  publishedAt,
+  "categoryTitle": categories[0]->title,
+  "categorySlug": categories[0]->slug.current
+}`
+export const postsByCategoryCountQuery = `count(*[_type == "post" && section == "kienThuc" && $categorySlug in categories[]->slug.current])`
+export const postsByCategorySearchQuery = `*[_type == "post" && section == "kienThuc" && $categorySlug in categories[]->slug.current && title match $q] | order(publishedAt desc){
+  title,
+  "slug": slug.current,
+  mainImage,
+  publishedAt,
+  "categoryTitle": categories[0]->title,
+  "categorySlug": categories[0]->slug.current
+}`
+
+// Posts by category slug (Tin Tức) — paginated
+export const tinTucPostsByCategoryQuery = `*[_type == "post" && section == "tinTuc" && $categorySlug in categories[]->slug.current] | order(publishedAt desc)[$from...$to]{
   title,
   "slug": slug.current,
   mainImage,
   publishedAt
 }`
-
-// Posts by category slug (Tin Tức)
-export const tinTucPostsByCategoryQuery = `*[_type == "post" && section == "tinTuc" && $categorySlug in categories[]->slug.current] | order(publishedAt desc){
+export const tinTucPostsByCategoryCountQuery = `count(*[_type == "post" && section == "tinTuc" && $categorySlug in categories[]->slug.current])`
+export const tinTucPostsByCategorySearchQuery = `*[_type == "post" && section == "tinTuc" && $categorySlug in categories[]->slug.current && title match $q] | order(publishedAt desc){
   title,
   "slug": slug.current,
   mainImage,
