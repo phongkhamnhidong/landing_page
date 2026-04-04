@@ -9,7 +9,8 @@ export const clinicInfoQuery = `*[_type == "clinicInfo"][0]{
   facebook,
   address,
   schedule[]{day, isClosed, openTime, closeTime, slots[]{openTime, closeTime}},
-  galleryImages[]{ "url": asset->url, alt }
+  galleryImages[]{ "url": asset->url, alt },
+  about
 }`
 
 // Categories for nav dropdown + listing page
