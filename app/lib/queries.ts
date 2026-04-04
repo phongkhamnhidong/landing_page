@@ -143,6 +143,17 @@ export const faqSearchPageQuery = `*[_type == "faq" && question match $q] | orde
   "categoryTitle": category->title
 }`
 
+// Related FAQs (same category, fallback any, exclude current)
+export const relatedFaqsQuery = `*[
+  _type == "faq" &&
+  _id != $id &&
+  ($categoryRef == null || category._ref == $categoryRef)
+] | order(publishedAt desc)[0...4]{
+  _id,
+  question,
+  "categoryTitle": category->title
+}`
+
 // Single FAQ by id (detail page)
 export const faqByIdQuery = `*[_type == "faq" && _id == $id][0]{
   _id,
@@ -150,7 +161,8 @@ export const faqByIdQuery = `*[_type == "faq" && _id == $id][0]{
   answer,
   publishedAt,
   submitterName,
-  "categoryTitle": category->title
+  "categoryTitle": category->title,
+  "categoryRef": category._ref
 }`
 
 // All FAQs (legacy, used by homepage widget)

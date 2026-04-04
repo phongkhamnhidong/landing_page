@@ -2,7 +2,7 @@ import { notFound } from "next/navigation"
 import type { Metadata } from "next"
 import Link from "next/link"
 import { client } from "@/sanity/lib/client"
-import { faqByIdQuery } from "@/app/lib/queries"
+import { faqByIdQuery, relatedFaqsQuery } from "@/app/lib/queries"
 import { getView } from "@/app/actions/incrementView"
 import ViewCounter from "@/app/components/ViewCounter"
 
@@ -32,6 +32,11 @@ export default async function FaqDetailPage({ params }: Props) {
     getView(`views:faq:${id}`),
   ])
   if (!faq) notFound()
+
+  const relatedFaqs = await client.fetch(relatedFaqsQuery, {
+    id,
+    categoryRef: faq.categoryRef ?? null,
+  })
 
   return (
     <div className="pt-16 bg-beige min-h-screen">
@@ -71,15 +76,34 @@ export default async function FaqDetailPage({ params }: Props) {
           </div>
         </div>
 
-        {/* Back link */}
-        <div className="mt-8 text-center">
-          <Link
-            href="/hoi-dap"
-            className="inline-flex items-center gap-2 text-sm font-medium text-brown-muted hover:text-navy border border-border bg-white px-5 py-2.5 rounded-full hover:border-gold/40 transition-all"
-          >
-            ← Xem tất cả câu hỏi
-          </Link>
-        </div>
+        {/* Related questions */}
+        {relatedFaqs && relatedFaqs.length > 0 && (
+          <div className="mt-8">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="h-px flex-1 bg-border" />
+              <span className="text-xs font-semibold uppercase tracking-widest text-brown-muted/60 shrink-0">Câu hỏi liên quan</span>
+              <div className="h-px flex-1 bg-border" />
+            </div>
+            <div className="space-y-2">
+              {relatedFaqs.map((rel: { _id: string; question: string; categoryTitle?: string }) => (
+                <Link
+                  key={rel._id}
+                  href={`/hoi-dap/${rel._id}`}
+                  className="group flex items-center gap-3 bg-white rounded-xl border border-border px-5 py-3.5 hover:border-gold/40 hover:shadow-sm transition-all"
+                >
+                  <span className="font-serif text-base text-gold leading-none shrink-0">CH</span>
+                  <p className="flex-1 text-sm font-medium text-navy group-hover:text-gold transition-colors leading-snug">
+                    {rel.question}
+                  </p>
+                  <svg className="w-4 h-4 text-brown-muted/40 group-hover:text-gold shrink-0 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+
       </article>
     </div>
   )
