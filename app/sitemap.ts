@@ -1,14 +1,15 @@
 import type { MetadataRoute } from "next"
 import { client } from "@/sanity/lib/client"
-import { allPostSlugsQuery, allCategorySlugsQuery, allTinTucCategorySlugsQuery } from "@/app/lib/queries"
+import { allPostSlugsQuery, allCategorySlugsQuery, allTinTucCategorySlugsQuery, allFaqQuery } from "@/app/lib/queries"
 
 const BASE_URL = "https://phongkhamnhidong.vn"
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [postSlugs, kienThucCats, tinTucCats] = await Promise.all([
+  const [postSlugs, kienThucCats, tinTucCats, faqs] = await Promise.all([
     client.fetch(allPostSlugsQuery),
     client.fetch(allCategorySlugsQuery),
     client.fetch(allTinTucCategorySlugsQuery),
+    client.fetch(allFaqQuery),
   ])
 
   const staticPages: MetadataRoute.Sitemap = [
@@ -38,5 +39,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     changeFrequency: "weekly" as const,
   }))
 
-  return [...staticPages, ...postPages, ...kienThucCatPages, ...tinTucCatPages]
+  const faqPages: MetadataRoute.Sitemap = faqs.map(({ _id }: { _id: string }) => ({
+    url: `${BASE_URL}/hoi-dap/${_id}`,
+    priority: 0.5,
+    changeFrequency: "monthly" as const,
+  }))
+
+  return [...staticPages, ...postPages, ...kienThucCatPages, ...tinTucCatPages, ...faqPages]
 }

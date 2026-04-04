@@ -103,7 +103,28 @@ export const allTinTucQuery = `*[_type == "post" && section == "tinTuc"] | order
   publishedAt
 }`
 
-// All FAQs
+// FAQ count (for pagination)
+export const faqCountQuery = `count(*[_type == "faq"])`
+
+// Paginated FAQs (questions only, no answer)
+export const faqPageQuery = `*[_type == "faq"] | order(publishedAt desc)[$from...$to]{
+  _id,
+  question,
+  publishedAt,
+  "categoryTitle": category->title
+}`
+
+// Single FAQ by id (detail page)
+export const faqByIdQuery = `*[_type == "faq" && _id == $id][0]{
+  _id,
+  question,
+  answer,
+  publishedAt,
+  submitterName,
+  "categoryTitle": category->title
+}`
+
+// All FAQs (legacy, used by homepage widget)
 export const allFaqQuery = `*[_type == "faq"] | order(publishedAt desc){
   _id,
   question,
