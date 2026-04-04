@@ -3,13 +3,29 @@ import {defineArrayMember, defineField, defineType} from 'sanity'
 
 export const postType = defineType({
   name: 'post',
-  title: 'Post',
+  title: 'Bài Viết',
   type: 'document',
   icon: DocumentTextIcon,
   fields: [
     defineField({
-      name: 'title',
+      name: 'section',
+      title: 'Phân mục',
       type: 'string',
+      options: {
+        list: [
+          {title: 'Kiến Thức Y Khoa', value: 'kienThuc'},
+          {title: 'Tin Tức', value: 'tinTuc'},
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'kienThuc',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'title',
+      title: 'Tiêu đề',
+      type: 'string',
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'slug',
@@ -20,34 +36,37 @@ export const postType = defineType({
     }),
     defineField({
       name: 'author',
+      title: 'Tác giả',
       type: 'reference',
-      to: {type: 'author'},
+      to: {type: 'doctor'},
     }),
     defineField({
       name: 'mainImage',
+      title: 'Ảnh chính',
       type: 'image',
-      options: {
-        hotspot: true,
-      },
+      options: {hotspot: true},
       fields: [
         defineField({
           name: 'alt',
           type: 'string',
-          title: 'Alternative text',
-        })
-      ]
+          title: 'Mô tả ảnh',
+        }),
+      ],
     }),
     defineField({
       name: 'categories',
+      title: 'Danh mục',
       type: 'array',
       of: [defineArrayMember({type: 'reference', to: {type: 'category'}})],
     }),
     defineField({
       name: 'publishedAt',
+      title: 'Ngày đăng',
       type: 'datetime',
     }),
     defineField({
       name: 'body',
+      title: 'Nội dung',
       type: 'blockContent',
     }),
   ],
@@ -56,10 +75,15 @@ export const postType = defineType({
       title: 'title',
       author: 'author.name',
       media: 'mainImage',
+      section: 'section',
     },
     prepare(selection) {
-      const {author} = selection
-      return {...selection, subtitle: author && `by ${author}`}
+      const {author, section} = selection
+      const label = section === 'tinTuc' ? 'Tin Tức' : 'Kiến Thức'
+      return {
+        ...selection,
+        subtitle: [label, author && `· ${author}`].filter(Boolean).join(' '),
+      }
     },
   },
 })
