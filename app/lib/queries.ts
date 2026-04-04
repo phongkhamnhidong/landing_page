@@ -192,6 +192,21 @@ export const postBySlugQuery = `*[_type == "post" && slug.current == $slug][0]{
   "categorySlug": categories[0]->slug.current
 }`
 
+// Related posts (same category first, fallback same section, exclude current)
+export const relatedPostsQuery = `*[
+  _type == "post" &&
+  slug.current != $slug &&
+  section == $section &&
+  ($categorySlug == null || $categorySlug in categories[]->slug.current)
+] | order(publishedAt desc)[0...3]{
+  title,
+  "slug": slug.current,
+  mainImage,
+  publishedAt,
+  "categoryTitle": categories[0]->title,
+  "categorySlug": categories[0]->slug.current
+}`
+
 // All post slugs (for generateStaticParams)
 export const allPostSlugsQuery = `*[_type == "post" && defined(slug.current)]{ "slug": slug.current }`
 

@@ -5,9 +5,10 @@ import Link from "next/link"
 import { PortableText } from "@portabletext/react"
 import { client } from "@/sanity/lib/client"
 import { urlFor } from "@/sanity/lib/image"
-import { postBySlugQuery, allPostSlugsQuery } from "@/app/lib/queries"
+import { postBySlugQuery, allPostSlugsQuery, relatedPostsQuery } from "@/app/lib/queries"
 import { getView } from "@/app/actions/incrementView"
 import ViewCounter from "@/app/components/ViewCounter"
+import PostCard from "@/app/components/PostCard"
 
 export const revalidate = 60
 
@@ -84,6 +85,12 @@ export default async function BlogPostPage({ params }: Props) {
     getView(`views:post:${slug}`),
   ])
   if (!post) notFound()
+
+  const relatedPosts = await client.fetch(relatedPostsQuery, {
+    slug,
+    section: post.section ?? "kienThuc",
+    categorySlug: post.categorySlug ?? null,
+  })
 
   const imageUrl = post.mainImage?.asset
     ? urlFor(post.mainImage).width(1200).height(600).fit("crop").url()
@@ -167,6 +174,24 @@ export default async function BlogPostPage({ params }: Props) {
           </div>
         )}
       </article>
+
+      {/* Related posts */}
+      {relatedPosts && relatedPosts.length > 0 && (
+        <section className="bg-beige border-t border-border py-16">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex items-center gap-4 mb-8">
+              <div className="h-px flex-1 bg-border" />
+              <h2 className="font-serif text-lg font-semibold text-navy shrink-0">Bài Viết Liên Quan</h2>
+              <div className="h-px flex-1 bg-border" />
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {relatedPosts.map((related: Parameters<typeof PostCard>[0]["post"]) => (
+                <PostCard key={related.slug} post={related} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
     </div>
   )
 }
