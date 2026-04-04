@@ -32,6 +32,7 @@ export default async function HomePage() {
         motto={clinicInfo?.motto}
         tagline={clinicInfo?.tagline}
         phone={clinicInfo?.phone}
+        galleryImages={clinicInfo?.galleryImages}
       />
       <FadeInView>
         <DoctorSection doctor={doctor} />

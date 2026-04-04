@@ -8,7 +8,8 @@ export const clinicInfoQuery = `*[_type == "clinicInfo"][0]{
   zalo,
   facebook,
   address,
-  schedule[]{day, isClosed, openTime, closeTime, slots[]{openTime, closeTime}}
+  schedule[]{day, isClosed, openTime, closeTime, slots[]{openTime, closeTime}},
+  galleryImages[]{ "url": asset->url, alt }
 }`
 
 // Categories for nav dropdown + listing page

@@ -112,6 +112,26 @@ export const clinicInfoType = defineType({
       ],
     }),
     defineField({
+      name: 'galleryImages',
+      title: 'Hình Ảnh Phòng Khám',
+      type: 'array',
+      description: 'Hình ảnh sẽ được hiển thị trong phần thư viện ảnh trên trang chủ',
+      of: [
+        {
+          type: 'image',
+          options: { hotspot: true },
+          fields: [
+            {
+              name: 'alt',
+              title: 'Mô tả ảnh',
+              type: 'string',
+              description: 'Mô tả ngắn về hình ảnh (cho khả năng tiếp cận)',
+            },
+          ],
+        },
+      ],
+    }),
+    defineField({
       name: 'about',
       title: 'About the Clinic',
       type: 'blockContent',
