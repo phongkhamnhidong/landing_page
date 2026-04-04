@@ -29,17 +29,32 @@ const DAY_INDEX: Record<number, string> = {
   4: "thursday", 5: "friday", 6: "saturday",
 }
 
+function getNowInVietnam() {
+  // Always use Vietnam timezone (UTC+7), regardless of server/browser locale
+  const formatter = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Ho_Chi_Minh",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    weekday: "long",
+  })
+  const parts = Object.fromEntries(formatter.formatToParts(new Date()).map((p) => [p.type, p.value]))
+  return {
+    day: String(parts.day).padStart(2, "0"),
+    month: String(parts.month).padStart(2, "0"),
+    year: parts.year,
+    weekday: parts.weekday?.toLowerCase() ?? "",
+  }
+}
+
 function formatCurrentDate() {
-  const now = new Date()
-  const day = String(now.getDate()).padStart(2, "0")
-  const month = String(now.getMonth() + 1).padStart(2, "0")
-  const year = now.getFullYear()
-  const weekday = DAY_LABELS[DAY_INDEX[now.getDay()]] ?? ""
-  return `${weekday}, ngày ${day} tháng ${month} năm ${year}`
+  const { day, month, year, weekday } = getNowInVietnam()
+  const label = DAY_LABELS[weekday] ?? ""
+  return `${label}, ngày ${day} tháng ${month} năm ${year}`
 }
 
 export default function ScheduleDisplay({ schedule }: Props) {
-  const todayKey = DAY_INDEX[new Date().getDay()]
+  const todayKey = getNowInVietnam().weekday
 
   // Normalise: prefer slots[] if present, otherwise fall back to legacy openTime/closeTime
   const normalised = schedule.map((item) => {

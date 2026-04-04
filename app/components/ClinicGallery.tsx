@@ -55,9 +55,10 @@ export default function ClinicGallery({ images }: Props) {
   if (shuffled.length === 0) return null
 
   const featured = shuffled[activeIndex]
-  // Show up to 5 thumbnails (others beyond that are still cycled but not shown simultaneously)
   const thumbCount = Math.min(shuffled.length, 5)
-  const thumbs = shuffled.slice(0, thumbCount)
+  // Slide the thumbnail window so the active image is always visible
+  const thumbStart = Math.max(0, Math.min(activeIndex - 2, shuffled.length - thumbCount))
+  const thumbs = shuffled.slice(thumbStart, thumbStart + thumbCount)
 
   return (
     <section className="py-20 bg-cream">
@@ -84,11 +85,12 @@ export default function ClinicGallery({ images }: Props) {
           {thumbs.length > 1 && (
             <div className="grid gap-3" style={{ gridTemplateColumns: `repeat(${thumbs.length}, 1fr)` }}>
               {thumbs.map((img, i) => {
-                const isActive = i === activeIndex % thumbCount
+                const globalIndex = thumbStart + i
+                const isActive = globalIndex === activeIndex
                 return (
                   <button
-                    key={img.url + i}
-                    onClick={() => advance(i)}
+                    key={img.url + globalIndex}
+                    onClick={() => advance(globalIndex)}
                     className={`relative h-20 sm:h-28 rounded-xl overflow-hidden border-2 transition-all duration-300 focus:outline-none ${
                       isActive
                         ? "border-gold scale-[1.03] shadow-md"

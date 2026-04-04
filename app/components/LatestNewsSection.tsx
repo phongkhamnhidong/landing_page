@@ -26,7 +26,7 @@ export default function LatestNewsSection({ posts }: Props) {
             href="/tin-tuc"
             className="inline-flex items-center gap-2 border border-navy text-navy font-medium px-7 py-3 rounded-full hover:bg-navy hover:text-white transition-colors text-sm"
           >
-            Xem tất cả →
+            Xem tất cả
           </Link>
         </div>
       </div>

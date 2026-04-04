@@ -20,9 +20,16 @@ export const doctorType = defineType({
     }),
     defineField({
       name: 'title',
-      title: 'Chức danh',
+      title: 'Chức danh (cũ)',
       type: 'string',
-      description: 'Ví dụ: Bác sĩ Nhi khoa, Thạc sĩ - Bác sĩ',
+      hidden: true,
+    }),
+    defineField({
+      name: 'titles',
+      title: 'Chức Danh',
+      type: 'array',
+      of: [defineArrayMember({type: 'string'})],
+      description: 'Thêm từng chức danh riêng biệt. Ví dụ: "Thầy Thuốc Ưu Tú", "Bác Sĩ Chuyên Khoa Cấp 2 Nhi"',
     }),
     defineField({
       name: 'qualifications',

@@ -1,17 +1,26 @@
 import { notFound } from "next/navigation"
 import type { Metadata } from "next"
+import Link from "next/link"
 import { client } from "@/sanity/lib/client"
 import {
   tinTucPostsByCategoryQuery,
+  tinTucPostsByCategoryCountQuery,
+  tinTucPostsByCategorySearchQuery,
   categoryBySlugQuery,
   allTinTucCategorySlugsQuery,
 } from "@/app/lib/queries"
 import PostCard from "@/app/components/PostCard"
 import SectionHeader from "@/app/components/SectionHeader"
+import SearchInput from "@/app/components/SearchInput"
 
 export const revalidate = 60
 
-type Props = { params: Promise<{ category: string }> }
+const PAGE_SIZE = 9
+
+type Props = {
+  params: Promise<{ category: string }>
+  searchParams: Promise<{ page?: string; q?: string }>
+}
 
 export async function generateStaticParams() {
   const cats = await client.fetch(allTinTucCategorySlugsQuery)
@@ -25,14 +34,36 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return { title: `${cat.title} | Phòng Khám Nhi Đồng` }
 }
 
-export default async function TinTucCategoryPage({ params }: Props) {
+export default async function TinTucCategoryPage({ params, searchParams }: Props) {
   const { category } = await params
-  const [cat, posts] = await Promise.all([
+  const { page: pageParam, q } = await searchParams
+  const query = q?.trim() ?? ""
+  const isSearching = query.length > 0
+  const searchTerm = query + "*"
+  const page = Math.max(1, parseInt(pageParam ?? "1", 10))
+  const from = (page - 1) * PAGE_SIZE
+  const to = from + PAGE_SIZE
+
+  const [cat, posts, total] = await Promise.all([
     client.fetch(categoryBySlugQuery, { slug: category }),
-    client.fetch(tinTucPostsByCategoryQuery, { categorySlug: category }),
+    isSearching
+      ? client.fetch(tinTucPostsByCategorySearchQuery, { categorySlug: category, q: searchTerm })
+      : client.fetch(tinTucPostsByCategoryQuery, { categorySlug: category, from, to }),
+    isSearching
+      ? Promise.resolve(0)
+      : client.fetch(tinTucPostsByCategoryCountQuery, { categorySlug: category }),
   ])
 
   if (!cat) notFound()
+
+  const totalPages = isSearching ? 1 : Math.ceil(total / PAGE_SIZE)
+
+  function pageHref(p: number) {
+    const params = new URLSearchParams()
+    if (p > 1) params.set("page", String(p))
+    const qs = params.toString()
+    return `/tin-tuc/${category}${qs ? `?${qs}` : ""}`
+  }
 
   return (
     <div className="pt-16">
@@ -43,14 +74,56 @@ export default async function TinTucCategoryPage({ params }: Props) {
             <p className="text-center text-brown-muted text-sm max-w-xl mx-auto mt-2">{cat.description}</p>
           )}
 
+          <div className="max-w-xl mx-auto mt-8">
+            <SearchInput defaultValue={query} placeholder="Tìm kiếm trong danh mục này..." />
+          </div>
+
+          {isSearching && (
+            <p className="text-xs text-brown-muted/60 text-center mt-4">
+              {posts.length} kết quả cho &ldquo;<span className="text-navy font-medium">{query}</span>&rdquo;
+            </p>
+          )}
+
           {posts && posts.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
-              {posts.map((post: Parameters<typeof PostCard>[0]["post"]) => (
-                <PostCard key={post.slug} post={post} />
-              ))}
-            </div>
+            <>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+                {posts.map((post: Parameters<typeof PostCard>[0]["post"]) => (
+                  <PostCard key={post.slug} post={post} />
+                ))}
+              </div>
+
+              {totalPages > 1 && (
+                <div className="flex items-center justify-center gap-2 mt-12">
+                  {page > 1 && (
+                    <Link href={pageHref(page - 1)} className="px-4 py-2 text-sm font-medium text-brown-muted bg-white border border-border rounded-lg hover:border-gold/40 hover:text-navy transition-all">
+                      ← Trước
+                    </Link>
+                  )}
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
+                    <Link
+                      key={p}
+                      href={pageHref(p)}
+                      className={`w-9 h-9 flex items-center justify-center text-sm font-medium rounded-lg border transition-all ${
+                        p === page
+                          ? "bg-navy text-cream border-navy"
+                          : "bg-white text-brown-muted border-border hover:border-gold/40 hover:text-navy"
+                      }`}
+                    >
+                      {p}
+                    </Link>
+                  ))}
+                  {page < totalPages && (
+                    <Link href={pageHref(page + 1)} className="px-4 py-2 text-sm font-medium text-brown-muted bg-white border border-border rounded-lg hover:border-gold/40 hover:text-navy transition-all">
+                      Tiếp →
+                    </Link>
+                  )}
+                </div>
+              )}
+            </>
           ) : (
-            <p className="text-center text-brown-muted mt-10">Chưa có bài viết nào trong danh mục này.</p>
+            <p className="text-center text-brown-muted mt-10">
+              {isSearching ? `Không tìm thấy bài viết nào cho "${query}".` : "Chưa có bài viết nào trong danh mục này."}
+            </p>
           )}
         </div>
       </section>

@@ -5,7 +5,11 @@ import Link from "next/link"
 import { PortableText } from "@portabletext/react"
 import { client } from "@/sanity/lib/client"
 import { urlFor } from "@/sanity/lib/image"
-import { postBySlugQuery, allPostSlugsQuery } from "@/app/lib/queries"
+import { postBySlugQuery, allPostSlugsQuery, relatedPostsQuery } from "@/app/lib/queries"
+import { getView } from "@/app/actions/incrementView"
+import { estimateReadingTime } from "@/app/lib/readingTime"
+import ViewCounter from "@/app/components/ViewCounter"
+import PostCard from "@/app/components/PostCard"
 
 export const revalidate = 60
 
@@ -20,7 +24,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
   const post = await client.fetch(postBySlugQuery, { slug })
   if (!post) return {}
-  return { title: `${post.title} | Phòng Khám Nhi Đồng` }
+
+  const imageUrl = post.mainImage?.asset
+    ? (await import("@/sanity/lib/image")).urlFor(post.mainImage).width(1200).height(630).fit("crop").url()
+    : undefined
+
+  return {
+    title: post.title,
+    description: post.excerpt ?? `${post.title} — Phòng Khám Nhi Đồng Minh Nguyệt`,
+    openGraph: {
+      title: post.title,
+      description: post.excerpt ?? `${post.title} — Phòng Khám Nhi Đồng Minh Nguyệt`,
+      type: "article",
+      ...(imageUrl && { images: [{ url: imageUrl, width: 1200, height: 630 }] }),
+    },
+  }
 }
 
 function formatDate(dateStr?: string) {
@@ -63,8 +81,19 @@ const portableTextComponents = {
 
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params
-  const post = await client.fetch(postBySlugQuery, { slug })
+  const [post, initialCount] = await Promise.all([
+    client.fetch(postBySlugQuery, { slug }),
+    getView(`views:post:${slug}`),
+  ])
   if (!post) notFound()
+
+  const readingTime = estimateReadingTime(post.body)
+
+  const relatedPosts = await client.fetch(relatedPostsQuery, {
+    slug,
+    section: post.section ?? "kienThuc",
+    categorySlug: post.categorySlug ?? null,
+  })
 
   const imageUrl = post.mainImage?.asset
     ? urlFor(post.mainImage).width(1200).height(600).fit("crop").url()
@@ -88,9 +117,20 @@ export default async function BlogPostPage({ params }: Props) {
               {post.categoryTitle}
             </span>
           )}
-          {post.publishedAt && (
-            <p className="text-xs text-brown-muted/60 mb-3">{formatDate(post.publishedAt)}</p>
-          )}
+          <div className="flex items-center justify-center lg:justify-start flex-wrap gap-x-3 gap-y-1 mb-3">
+            {post.publishedAt && (
+              <span className="text-xs text-brown-muted/60">{formatDate(post.publishedAt)}</span>
+            )}
+            <span className="text-brown-muted/30 text-xs">·</span>
+            <span className="inline-flex items-center gap-1 text-xs text-brown-muted/60">
+              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6v6l4 2m6-2a10 10 0 1 1-20 0 10 10 0 0 1 20 0z" />
+              </svg>
+              {readingTime} phút đọc
+            </span>
+            <span className="text-brown-muted/30 text-xs">·</span>
+            <ViewCounter viewKey={`views:post:${slug}`} initialCount={initialCount} />
+          </div>
           <h1 className="font-serif text-3xl sm:text-4xl font-semibold text-navy leading-tight mb-4">
             {post.title}
           </h1>
@@ -144,6 +184,24 @@ export default async function BlogPostPage({ params }: Props) {
           </div>
         )}
       </article>
+
+      {/* Related posts */}
+      {relatedPosts && relatedPosts.length > 0 && (
+        <section className="bg-beige border-t border-border py-16">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex items-center gap-4 mb-8">
+              <div className="h-px flex-1 bg-border" />
+              <h2 className="font-serif text-lg font-semibold text-navy shrink-0">Bài Viết Liên Quan</h2>
+              <div className="h-px flex-1 bg-border" />
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {relatedPosts.map((related: Parameters<typeof PostCard>[0]["post"]) => (
+                <PostCard key={related.slug} post={related} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
     </div>
   )
 }

@@ -1,4 +1,11 @@
+import type { Metadata } from "next"
 import { client } from "@/sanity/lib/client"
+
+export const metadata: Metadata = {
+  title: "Trang Chủ",
+  description:
+    "Phòng Khám Nhi Đồng Minh Nguyệt — chăm sóc sức khỏe toàn diện cho trẻ em từ sơ sinh đến 15 tuổi tại Bình Dương. Đặt lịch khám ngay hôm nay.",
+}
 import {
   clinicInfoQuery,
   doctorQuery,
@@ -34,6 +41,7 @@ export default async function HomePage() {
         tagline={clinicInfo?.tagline}
         phone={clinicInfo?.phone}
         galleryImages={clinicInfo?.galleryImages}
+        treatmentAreas={doctor?.treatmentAreas}
       />
       <FadeInView>
         <DoctorSection doctor={doctor} />

@@ -5,6 +5,7 @@ import SectionHeader from "./SectionHeader"
 type Doctor = {
   name?: string
   title?: string
+  titles?: string[]
   qualifications?: string
   shortBio?: string
   treatmentAreas?: string[]
@@ -47,13 +48,27 @@ export default function DoctorSection({ doctor }: Props) {
 
           {/* Info — 3/5 width */}
           <div className="lg:col-span-3 p-8 lg:p-10 bg-white text-center lg:text-left">
-            {/* Name + title */}
-            <p className="text-gold text-xs font-semibold uppercase tracking-[0.2em] mb-1">
-              {doctor.title ?? "Bác sĩ Nhi khoa"}
-            </p>
-            <h3 className="font-serif text-3xl font-semibold text-navy mb-1">
+            <h3 className="font-serif text-3xl font-semibold text-navy mb-3">
               {doctor.name ?? "Bác sĩ Minh Nguyệt"}
             </h3>
+
+            {/* Titles as badges */}
+            {(doctor.titles && doctor.titles.length > 0) ? (
+              <div className="flex flex-wrap justify-center lg:justify-start gap-2 mb-3">
+                {doctor.titles.map((t, i) => (
+                  <span
+                    key={i}
+                    className="text-[10px] font-semibold uppercase tracking-[0.15em] text-white bg-navy px-3 py-1.5 rounded-sm"
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
+            ) : doctor.title ? (
+              <p className="text-gold text-xs font-semibold uppercase tracking-[0.2em] mb-3">
+                {doctor.title}
+              </p>
+            ) : null}
             {doctor.qualifications && (
               <p className="text-brown-muted text-sm mb-4">{doctor.qualifications}</p>
             )}
@@ -89,10 +104,10 @@ export default function DoctorSection({ doctor }: Props) {
               {/* Achievements */}
               {doctor.achievements && doctor.achievements.length > 0 && (
                 <div>
-                  <h4 className="font-semibold text-navy text-xs uppercase tracking-widest mb-3">
+                  <h4 className="font-semibold text-navy text-xs uppercase tracking-widest mb-3 text-center lg:text-left">
                     Thành tích
                   </h4>
-                  <ul className="space-y-1.5">
+                  <ul className="space-y-1.5 text-left">
                     {doctor.achievements.map((item, i) => (
                       <li key={i} className="flex items-start gap-2 text-sm text-brown-muted">
                         <span className="text-gold text-xs mt-1 shrink-0">✦</span>

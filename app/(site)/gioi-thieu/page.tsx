@@ -1,4 +1,11 @@
+import type { Metadata } from "next"
 import { client } from "@/sanity/lib/client"
+
+export const metadata: Metadata = {
+  title: "Giới Thiệu",
+  description:
+    "Tìm hiểu về Phòng Khám Nhi Đồng Minh Nguyệt — 28 năm kinh nghiệm, đội ngũ bác sĩ chuyên khoa, trang thiết bị hiện đại tại Bình Dương.",
+}
 import { clinicInfoQuery, doctorQuery } from "@/app/lib/queries"
 import { PortableText } from "@portabletext/react"
 import SectionHeader from "@/app/components/SectionHeader"

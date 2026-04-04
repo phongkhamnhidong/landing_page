@@ -1,4 +1,5 @@
 import HeroGallery from "./HeroGallery"
+import CyclingText from "./CyclingText"
 
 type GalleryImage = {
   url: string
@@ -11,9 +12,10 @@ type Props = {
   tagline?: string
   phone?: string
   galleryImages?: GalleryImage[]
+  treatmentAreas?: string[]
 }
 
-export default function HeroSection({ clinicName, motto, tagline, phone, galleryImages }: Props) {
+export default function HeroSection({ clinicName, motto, tagline, phone, galleryImages, treatmentAreas }: Props) {
   const hasImages = galleryImages && galleryImages.length > 0
 
   return (
@@ -39,6 +41,13 @@ export default function HeroSection({ clinicName, motto, tagline, phone, gallery
               {motto ?? "CHẤT LƯỢNG – HIỆU QUẢ – TẬN TÂM"}
             </p>
 
+            {/* Cycling treatment areas */}
+            {treatmentAreas && treatmentAreas.length > 0 && (
+              <div className="mb-5">
+                <CyclingText items={treatmentAreas} />
+              </div>
+            )}
+
             {/* Tagline */}
             {tagline && (
               <p className="text-brown-muted text-base sm:text-lg leading-relaxed mb-10 max-w-lg mx-auto lg:mx-0">
@@ -53,7 +62,8 @@ export default function HeroSection({ clinicName, motto, tagline, phone, gallery
                   href={`tel:${phone.replace(/\s/g, "")}`}
                   className="inline-flex items-center gap-2 bg-navy text-white font-medium px-7 py-3.5 rounded-full hover:bg-navy-light transition-colors text-sm"
                 >
-                  <span>📞</span> Gọi ngay: {phone}
+                  <svg viewBox="0 0 24 24" className="w-4 h-4 shrink-0" fill="currentColor"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24 11.47 11.47 0 003.58.57 1 1 0 011 1V21a1 1 0 01-1 1A17 17 0 013 5a1 1 0 011-1h3.5a1 1 0 011 1 11.47 11.47 0 00.57 3.58 1 1 0 01-.24 1.01l-2.21 2.2z"/></svg>
+                  Gọi ngay: {phone}
                 </a>
               )}
               <a
