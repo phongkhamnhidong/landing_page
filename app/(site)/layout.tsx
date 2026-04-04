@@ -13,7 +13,13 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
       <main className="flex-1">
         <PageTransition>{children}</PageTransition>
       </main>
-      <Footer clinicName={clinicInfo?.clinicName} />
+      <Footer
+        clinicName={clinicInfo?.clinicName}
+        motto={clinicInfo?.motto}
+        phone={clinicInfo?.phone}
+        zalo={clinicInfo?.zalo}
+        facebook={clinicInfo?.facebook}
+      />
     </>
   )
 }
