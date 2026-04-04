@@ -63,7 +63,7 @@ export const latestFaqQuery = `*[_type == "faq"] | order(publishedAt desc)[0...3
 }`
 
 // All kienThuc posts (listing page)
-export const allKienThucQuery = `*[_type == "post" && section == "kienThuc"] | order(publishedAt desc){
+export const allKienThucQuery = `*[_type == "post" && section == "kienThuc"] | order(publishedAt desc)[0...9]{
   title,
   "slug": slug.current,
   mainImage,
@@ -95,7 +95,7 @@ export const categoryBySlugQuery = `*[_type == "category" && slug.current == $sl
 }`
 
 // All tinTuc posts (listing page)
-export const allTinTucQuery = `*[_type == "post" && section == "tinTuc"] | order(publishedAt desc){
+export const allTinTucQuery = `*[_type == "post" && section == "tinTuc"] | order(publishedAt desc)[0...9]{
   title,
   "slug": slug.current,
   mainImage,

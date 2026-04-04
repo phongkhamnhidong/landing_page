@@ -1,20 +1,25 @@
 import Link from "next/link"
 import { client } from "@/sanity/lib/client"
-import { categoriesQuery } from "@/app/lib/queries"
+import { categoriesQuery, allKienThucQuery } from "@/app/lib/queries"
+import PostCard from "@/app/components/PostCard"
 import SectionHeader from "@/app/components/SectionHeader"
 
 export const revalidate = 60
 
 export default async function KienThucPage() {
-  const categories = await client.fetch(categoriesQuery)
+  const [categories, posts] = await Promise.all([
+    client.fetch(categoriesQuery),
+    client.fetch(allKienThucQuery),
+  ])
 
   return (
     <div className="pt-16">
-      <section className="py-20 bg-beige">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionHeader label="Kiến thức y khoa" title="Danh Mục Sức Khỏe" />
+      {/* Categories */}
+      {categories && categories.length > 0 && (
+        <section className="py-20 bg-beige">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <SectionHeader label="Kiến thức y khoa" title="Danh Mục Sức Khỏe" />
 
-          {categories && categories.length > 0 ? (
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mt-10">
               {categories.map((cat: { title: string; slug: string; description?: string }) => (
                 <Link
@@ -32,10 +37,23 @@ export default async function KienThucPage() {
                 </Link>
               ))}
             </div>
+          </div>
+        </section>
+      )}
+
+      {/* Latest 9 posts */}
+      <section className={`py-20 ${categories?.length > 0 ? "bg-cream" : "bg-beige"}`}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SectionHeader label="Mới nhất" title="Bài Viết Gần Đây" />
+
+          {posts && posts.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
+              {posts.map((post: Parameters<typeof PostCard>[0]["post"]) => (
+                <PostCard key={post.slug} post={post} />
+              ))}
+            </div>
           ) : (
-            <p className="text-center text-brown-muted mt-10">
-              Chưa có danh mục nào. Vui lòng tạo danh mục trong Sanity Studio.
-            </p>
+            <p className="text-center text-brown-muted mt-10">Chưa có bài viết nào.</p>
           )}
         </div>
       </section>
