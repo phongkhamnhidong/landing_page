@@ -1,9 +1,10 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import { client } from "@/sanity/lib/client"
-import { faqPageQuery, faqCountQuery } from "@/app/lib/queries"
+import { faqPageQuery, faqCountQuery, faqSearchPageQuery, faqSearchCountQuery } from "@/app/lib/queries"
 import SectionHeader from "@/app/components/SectionHeader"
 import QuestionForm from "@/app/components/QuestionForm"
+import FaqSearchInput from "@/app/components/FaqSearchInput"
 
 export const metadata: Metadata = {
   title: "Hỏi Đáp",
@@ -15,20 +16,36 @@ export const revalidate = 60
 
 const PAGE_SIZE = 10
 
-type Props = { searchParams: Promise<{ page?: string }> }
+type Props = { searchParams: Promise<{ page?: string; q?: string }> }
 
 export default async function HoiDapPage({ searchParams }: Props) {
-  const { page: pageParam } = await searchParams
+  const { page: pageParam, q } = await searchParams
+  const query = q?.trim() ?? ""
   const page = Math.max(1, parseInt(pageParam ?? "1", 10))
   const from = (page - 1) * PAGE_SIZE
   const to = from + PAGE_SIZE
 
+  const isSearching = query.length > 0
+  const searchTerm = query + "*" // Sanity match supports wildcard suffix
+
   const [faqs, total] = await Promise.all([
-    client.fetch(faqPageQuery, { from, to }),
-    client.fetch(faqCountQuery),
+    isSearching
+      ? client.fetch(faqSearchPageQuery, { q: searchTerm, from, to })
+      : client.fetch(faqPageQuery, { from, to }),
+    isSearching
+      ? client.fetch(faqSearchCountQuery, { q: searchTerm })
+      : client.fetch(faqCountQuery),
   ])
 
   const totalPages = Math.ceil(total / PAGE_SIZE)
+
+  function pageHref(p: number) {
+    const params = new URLSearchParams()
+    if (query) params.set("q", query)
+    if (p > 1) params.set("page", String(p))
+    const qs = params.toString()
+    return `/hoi-dap${qs ? `?${qs}` : ""}`
+  }
 
   return (
     <div className="pt-16 bg-beige">
@@ -37,9 +54,17 @@ export default async function HoiDapPage({ searchParams }: Props) {
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader label="Giải đáp thắc mắc" title="Hỏi Đáp" />
 
+          <FaqSearchInput defaultValue={query} />
+
           {faqs && faqs.length > 0 ? (
             <>
-              <div className="space-y-3 mt-10">
+              {isSearching && (
+                <p className="text-xs text-brown-muted/60 mt-4 mb-1">
+                  {total} kết quả cho &ldquo;<span className="text-navy font-medium">{query}</span>&rdquo;
+                </p>
+              )}
+
+              <div className="space-y-3 mt-4">
                 {faqs.map((faq: { _id: string; question: string; categoryTitle?: string }) => (
                   <Link
                     key={faq._id}
@@ -68,17 +93,14 @@ export default async function HoiDapPage({ searchParams }: Props) {
               {totalPages > 1 && (
                 <div className="flex items-center justify-center gap-2 mt-10">
                   {page > 1 && (
-                    <Link
-                      href={`/hoi-dap?page=${page - 1}`}
-                      className="px-4 py-2 text-sm font-medium text-brown-muted bg-white border border-border rounded-lg hover:border-gold/40 hover:text-navy transition-all"
-                    >
+                    <Link href={pageHref(page - 1)} className="px-4 py-2 text-sm font-medium text-brown-muted bg-white border border-border rounded-lg hover:border-gold/40 hover:text-navy transition-all">
                       ← Trước
                     </Link>
                   )}
                   {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
                     <Link
                       key={p}
-                      href={`/hoi-dap?page=${p}`}
+                      href={pageHref(p)}
                       className={`w-9 h-9 flex items-center justify-center text-sm font-medium rounded-lg border transition-all ${
                         p === page
                           ? "bg-navy text-cream border-navy"
@@ -89,10 +111,7 @@ export default async function HoiDapPage({ searchParams }: Props) {
                     </Link>
                   ))}
                   {page < totalPages && (
-                    <Link
-                      href={`/hoi-dap?page=${page + 1}`}
-                      className="px-4 py-2 text-sm font-medium text-brown-muted bg-white border border-border rounded-lg hover:border-gold/40 hover:text-navy transition-all"
-                    >
+                    <Link href={pageHref(page + 1)} className="px-4 py-2 text-sm font-medium text-brown-muted bg-white border border-border rounded-lg hover:border-gold/40 hover:text-navy transition-all">
                       Tiếp →
                     </Link>
                   )}
@@ -101,7 +120,9 @@ export default async function HoiDapPage({ searchParams }: Props) {
             </>
           ) : (
             <p className="text-center text-brown-muted mt-10">
-              Chưa có câu hỏi nào. Vui lòng thêm trong Sanity Studio.
+              {isSearching
+                ? `Không tìm thấy câu hỏi nào cho "${query}".`
+                : "Chưa có câu hỏi nào. Vui lòng thêm trong Sanity Studio."}
             </p>
           )}
         </div>
