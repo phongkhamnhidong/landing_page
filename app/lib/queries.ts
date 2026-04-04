@@ -6,7 +6,7 @@ export const clinicInfoQuery = `*[_type == "clinicInfo"][0]{
   phone,
   email,
   address,
-  openingHours
+  schedule[]{day, isClosed, openTime, closeTime, slots[]{openTime, closeTime}}
 }`
 
 // Categories for nav dropdown + listing page

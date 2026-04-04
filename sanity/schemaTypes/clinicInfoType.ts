@@ -43,10 +43,61 @@ export const clinicInfoType = defineType({
     }),
     defineField({
       name: 'openingHours',
-      title: 'Opening Hours',
+      title: 'Opening Hours (deprecated)',
       type: 'text',
-      rows: 4,
-      description: 'e.g. Thứ 2 - Thứ 6: 8:00 - 17:00',
+      hidden: true,
+    }),
+    defineField({
+      name: 'schedule',
+      title: 'Lịch Làm Việc',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          name: 'daySchedule',
+          fields: [
+            {
+              name: 'day',
+              title: 'Ngày',
+              type: 'string',
+              options: {
+                list: [
+                  {title: 'Thứ Hai', value: 'monday'},
+                  {title: 'Thứ Ba', value: 'tuesday'},
+                  {title: 'Thứ Tư', value: 'wednesday'},
+                  {title: 'Thứ Năm', value: 'thursday'},
+                  {title: 'Thứ Sáu', value: 'friday'},
+                  {title: 'Thứ Bảy', value: 'saturday'},
+                  {title: 'Chủ Nhật', value: 'sunday'},
+                ],
+              },
+            },
+            {name: 'openTime', title: 'Giờ mở cửa (deprecated)', type: 'string', hidden: true},
+            {name: 'closeTime', title: 'Giờ đóng cửa (deprecated)', type: 'string', hidden: true},
+            {
+              name: 'slots',
+              title: 'Khung giờ',
+              type: 'array',
+              of: [
+                {
+                  type: 'object',
+                  fields: [
+                    {name: 'openTime', title: 'Giờ mở cửa', type: 'string'},
+                    {name: 'closeTime', title: 'Giờ đóng cửa', type: 'string'},
+                  ],
+                  preview: {
+                    select: {title: 'openTime', subtitle: 'closeTime'},
+                  },
+                },
+              ],
+            },
+            {name: 'isClosed', title: 'Nghỉ', type: 'boolean', initialValue: false},
+          ],
+          preview: {
+            select: {title: 'day'},
+          },
+        },
+      ],
     }),
     defineField({
       name: 'about',
