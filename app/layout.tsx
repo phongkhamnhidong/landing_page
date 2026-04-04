@@ -16,8 +16,23 @@ const beVietnamPro = Be_Vietnam_Pro({
 })
 
 export const metadata: Metadata = {
-  title: "Phòng Khám Nhi Đồng",
-  description: "Phòng khám nhi khoa chuyên chăm sóc sức khỏe cho trẻ em.",
+  title: {
+    default: "Phòng Khám Nhi Đồng Minh Nguyệt",
+    template: "%s | Phòng Khám Nhi Đồng Minh Nguyệt",
+  },
+  description:
+    "Phòng Khám Nhi Đồng Minh Nguyệt — chuyên khám và điều trị bệnh cho trẻ em từ sơ sinh đến 15 tuổi tại Bình Dương. Bác sĩ Chuyên Khoa II Nhi với hơn 30 năm kinh nghiệm.",
+  keywords: ["phòng khám nhi", "bác sĩ nhi", "khám nhi Bình Dương", "Minh Nguyệt", "nhi đồng", "trẻ em"],
+  authors: [{ name: "Phòng Khám Nhi Đồng Minh Nguyệt" }],
+  openGraph: {
+    type: "website",
+    locale: "vi_VN",
+    siteName: "Phòng Khám Nhi Đồng Minh Nguyệt",
+    title: "Phòng Khám Nhi Đồng Minh Nguyệt",
+    description:
+      "Chuyên khám và điều trị bệnh cho trẻ em từ sơ sinh đến 15 tuổi. Bác sĩ Chuyên Khoa II Nhi với hơn 30 năm kinh nghiệm tại Bình Dương.",
+  },
+  robots: { index: true, follow: true },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

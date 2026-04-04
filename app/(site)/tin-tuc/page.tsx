@@ -1,4 +1,11 @@
+import type { Metadata } from "next"
 import Link from "next/link"
+
+export const metadata: Metadata = {
+  title: "Tin Tức",
+  description:
+    "Tin tức và thông báo mới nhất từ Phòng Khám Nhi Đồng Minh Nguyệt.",
+}
 import { client } from "@/sanity/lib/client"
 import { tinTucCategoriesQuery, allTinTucQuery } from "@/app/lib/queries"
 import PostCard from "@/app/components/PostCard"

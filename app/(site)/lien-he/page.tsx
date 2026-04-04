@@ -1,4 +1,11 @@
+import type { Metadata } from "next"
 import { client } from "@/sanity/lib/client"
+
+export const metadata: Metadata = {
+  title: "Liên Hệ",
+  description:
+    "Liên hệ Phòng Khám Nhi Đồng Minh Nguyệt qua điện thoại, Zalo hoặc Facebook. Đặt lịch khám cho bé.",
+}
 import { clinicInfoQuery } from "@/app/lib/queries"
 import SectionHeader from "@/app/components/SectionHeader"
 import Image from "next/image"

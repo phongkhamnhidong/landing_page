@@ -1,4 +1,11 @@
+import type { Metadata } from "next"
 import Link from "next/link"
+
+export const metadata: Metadata = {
+  title: "Kiến Thức Sức Khỏe",
+  description:
+    "Kiến thức y khoa về sức khỏe trẻ em — dinh dưỡng, hô hấp, tiêu hóa, thần kinh và nhiều chủ đề khác từ bác sĩ Minh Nguyệt.",
+}
 import { client } from "@/sanity/lib/client"
 import { categoriesQuery, allKienThucQuery } from "@/app/lib/queries"
 import PostCard from "@/app/components/PostCard"

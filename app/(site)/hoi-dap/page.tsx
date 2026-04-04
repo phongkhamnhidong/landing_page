@@ -1,4 +1,11 @@
+import type { Metadata } from "next"
 import { client } from "@/sanity/lib/client"
+
+export const metadata: Metadata = {
+  title: "Hỏi Đáp",
+  description:
+    "Giải đáp các thắc mắc về sức khỏe trẻ em. Gửi câu hỏi để bác sĩ Minh Nguyệt tư vấn trực tiếp.",
+}
 import { allFaqQuery } from "@/app/lib/queries"
 import SectionHeader from "@/app/components/SectionHeader"
 import QuestionForm from "@/app/components/QuestionForm"

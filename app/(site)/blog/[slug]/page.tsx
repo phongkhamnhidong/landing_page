@@ -20,7 +20,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
   const post = await client.fetch(postBySlugQuery, { slug })
   if (!post) return {}
-  return { title: `${post.title} | Phòng Khám Nhi Đồng` }
+
+  const imageUrl = post.mainImage?.asset
+    ? (await import("@/sanity/lib/image")).urlFor(post.mainImage).width(1200).height(630).fit("crop").url()
+    : undefined
+
+  return {
+    title: post.title,
+    description: post.excerpt ?? `${post.title} — Phòng Khám Nhi Đồng Minh Nguyệt`,
+    openGraph: {
+      title: post.title,
+      description: post.excerpt ?? `${post.title} — Phòng Khám Nhi Đồng Minh Nguyệt`,
+      type: "article",
+      ...(imageUrl && { images: [{ url: imageUrl, width: 1200, height: 630 }] }),
+    },
+  }
 }
 
 function formatDate(dateStr?: string) {
