@@ -66,7 +66,7 @@ export default function ScheduleDisplay({ schedule }: Props) {
   return (
     <div>
       {/* Current date */}
-      <p className="text-xs text-brown-muted/60 mb-4 font-medium">{formatCurrentDate()}</p>
+      <p className="text-xs text-brown-muted/60 mb-4 font-medium text-center lg:text-left">{formatCurrentDate()}</p>
 
       <div className="divide-y divide-border">
         {merged.map((item) => {

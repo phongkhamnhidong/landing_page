@@ -31,7 +31,7 @@ export default function Footer({ clinicName, motto, phone, zalo, facebook }: Pro
           {/* Quick links */}
           <div className="text-center sm:text-left">
             <h3 className="font-semibold text-cream mb-3">Liên kết nhanh</h3>
-            <ul className="space-y-2 text-xs">
+            <ul className="space-y-2 text-xs flex flex-col items-center sm:items-start">
               {[
                 ["Trang Chủ", "/"],
                 ["Giới Thiệu", "/gioi-thieu"],
