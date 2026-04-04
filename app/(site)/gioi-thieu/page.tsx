@@ -3,6 +3,7 @@ import { clinicInfoQuery, doctorQuery } from "@/app/lib/queries"
 import { PortableText } from "@portabletext/react"
 import SectionHeader from "@/app/components/SectionHeader"
 import DoctorSection from "@/app/components/DoctorSection"
+import ClinicGallery from "@/app/components/ClinicGallery"
 
 export const revalidate = 60
 
@@ -87,6 +88,11 @@ export default async function GioiThieuPage() {
 
       {/* About the Doctor */}
       <DoctorSection doctor={doctor} />
+
+      {/* Clinic gallery */}
+      {clinicInfo?.galleryImages?.length > 0 && (
+        <ClinicGallery images={clinicInfo.galleryImages} />
+      )}
     </div>
   )
 }
