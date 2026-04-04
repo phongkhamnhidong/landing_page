@@ -13,6 +13,7 @@ import LatestKienThucSection from "@/app/components/LatestKienThucSection"
 import LatestNewsSection from "@/app/components/LatestNewsSection"
 import LatestFAQSection from "@/app/components/LatestFAQSection"
 import ContactSection from "@/app/components/ContactSection"
+import FadeInView from "@/app/components/FadeInView"
 
 export const revalidate = 60
 
@@ -33,21 +34,33 @@ export default async function HomePage() {
         tagline={clinicInfo?.tagline}
         phone={clinicInfo?.phone}
       />
-      <DoctorSection doctor={doctor} />
-      <WorkingHoursSection
-        openingHours={clinicInfo?.openingHours}
-        address={clinicInfo?.address}
-        phone={clinicInfo?.phone}
-      />
-      <LatestKienThucSection posts={kienThucPosts} />
-      <LatestNewsSection posts={tinTucPosts} />
-      <LatestFAQSection faqs={faqs} />
-      <ContactSection
-        phone={clinicInfo?.phone}
-        email={clinicInfo?.email}
-        address={clinicInfo?.address}
-        openingHours={clinicInfo?.openingHours}
-      />
+      <FadeInView>
+        <DoctorSection doctor={doctor} />
+      </FadeInView>
+      <FadeInView>
+        <WorkingHoursSection
+          openingHours={clinicInfo?.openingHours}
+          address={clinicInfo?.address}
+          phone={clinicInfo?.phone}
+        />
+      </FadeInView>
+      <FadeInView>
+        <LatestKienThucSection posts={kienThucPosts} />
+      </FadeInView>
+      <FadeInView>
+        <LatestNewsSection posts={tinTucPosts} />
+      </FadeInView>
+      <FadeInView>
+        <LatestFAQSection faqs={faqs} />
+      </FadeInView>
+      <FadeInView>
+        <ContactSection
+          phone={clinicInfo?.phone}
+          email={clinicInfo?.email}
+          address={clinicInfo?.address}
+          openingHours={clinicInfo?.openingHours}
+        />
+      </FadeInView>
     </>
   )
 }

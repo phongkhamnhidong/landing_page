@@ -1,3 +1,5 @@
+import FadeInView from "./FadeInView"
+
 type Props = {
   label?: string
   title: string
@@ -6,7 +8,7 @@ type Props = {
 
 export default function SectionHeader({ label, title, center = true }: Props) {
   return (
-    <div className={`mb-10 ${center ? "text-center" : ""}`}>
+    <FadeInView className={`mb-10 ${center ? "text-center" : ""}`}>
       {label && (
         <p className="text-gold text-xs font-semibold uppercase tracking-[0.2em] mb-3">{label}</p>
       )}
@@ -16,6 +18,6 @@ export default function SectionHeader({ label, title, center = true }: Props) {
         <div className="h-1 w-1 rounded-full bg-gold" />
         <div className="h-px w-4 bg-gold/40" />
       </div>
-    </div>
+    </FadeInView>
   )
 }
