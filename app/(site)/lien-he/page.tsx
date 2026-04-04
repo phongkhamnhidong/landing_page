@@ -1,6 +1,7 @@
 import { client } from "@/sanity/lib/client"
 import { clinicInfoQuery } from "@/app/lib/queries"
 import SectionHeader from "@/app/components/SectionHeader"
+import Image from "next/image"
 
 export const revalidate = 60
 
@@ -41,10 +42,7 @@ export default async function LienHePage() {
                 className="group bg-white rounded-2xl border border-border p-7 flex flex-col items-center text-center hover:shadow-md hover:border-gold/40 transition-all"
               >
                 <div className="w-14 h-14 rounded-full bg-[#0068FF]/10 flex items-center justify-center mb-4">
-                  <svg viewBox="0 0 48 48" className="w-7 h-7" fill="none">
-                    <rect width="48" height="48" rx="12" fill="#0068FF"/>
-                    <text x="50%" y="55%" dominantBaseline="middle" textAnchor="middle" fill="white" fontSize="18" fontWeight="bold" fontFamily="Arial">Z</text>
-                  </svg>
+                  <Image src="/zalo_logo.png" alt="Zalo" width={36} height={36} />
                 </div>
                 <p className="text-xs font-semibold uppercase tracking-widest text-gold mb-2">Zalo</p>
                 <p className="text-sm font-semibold text-navy group-hover:text-gold transition-colors">

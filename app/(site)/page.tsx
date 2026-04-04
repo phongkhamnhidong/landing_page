@@ -9,6 +9,7 @@ import {
 import HeroSection from "@/app/components/HeroSection"
 import WorkingHoursSection from "@/app/components/WorkingHoursSection"
 import DoctorSection from "@/app/components/DoctorSection"
+import MobileGallery from "@/app/components/MobileGallery"
 import LatestKienThucSection from "@/app/components/LatestKienThucSection"
 import LatestNewsSection from "@/app/components/LatestNewsSection"
 import LatestFAQSection from "@/app/components/LatestFAQSection"
@@ -37,6 +38,11 @@ export default async function HomePage() {
       <FadeInView>
         <DoctorSection doctor={doctor} />
       </FadeInView>
+      {clinicInfo?.galleryImages?.length > 0 && (
+        <FadeInView>
+          <MobileGallery images={clinicInfo.galleryImages} />
+        </FadeInView>
+      )}
       <FadeInView>
         <WorkingHoursSection
           schedule={clinicInfo?.schedule}

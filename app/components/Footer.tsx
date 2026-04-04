@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from "next/image"
 
 type Props = {
   clinicName?: string
@@ -62,10 +63,7 @@ export default function Footer({ clinicName, motto, phone, zalo, facebook }: Pro
               {zaloHref && (
                 <li>
                   <a href={zaloHref} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-gold transition-colors">
-                    <svg viewBox="0 0 48 48" className="w-4 h-4 shrink-0">
-                      <rect width="48" height="48" rx="10" fill="#0068FF"/>
-                      <text x="50%" y="55%" dominantBaseline="middle" textAnchor="middle" fill="white" fontSize="22" fontWeight="bold" fontFamily="Arial">Z</text>
-                    </svg>
+                    <Image src="/zalo_logo.png" alt="Zalo" width={16} height={16} className="shrink-0" />
                     Zalo: {zalo}
                   </a>
                 </li>
