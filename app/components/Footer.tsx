@@ -56,7 +56,7 @@ export default function Footer({ clinicName, motto, phone, zalo, facebook }: Pro
               {phone && (
                 <li>
                   <a href={`tel:${phone.replace(/\s/g, "")}`} className="flex items-center justify-center sm:justify-start gap-2 hover:text-gold transition-colors">
-                    <span className="text-sm">📞</span> {phone}
+                    <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 shrink-0" fill="currentColor"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24 11.47 11.47 0 003.58.57 1 1 0 011 1V21a1 1 0 01-1 1A17 17 0 013 5a1 1 0 011-1h3.5a1 1 0 011 1 11.47 11.47 0 00.57 3.58 1 1 0 01-.24 1.01l-2.21 2.2z"/></svg> {phone}
                   </a>
                 </li>
               )}
