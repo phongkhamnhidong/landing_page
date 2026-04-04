@@ -13,10 +13,10 @@ export default async function GioiThieuPage() {
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <p className="text-gold text-xs font-semibold uppercase tracking-[0.2em] mb-4">Về chúng tôi</p>
           <h1 className="font-serif text-4xl sm:text-5xl font-semibold text-navy mb-4">Giới Thiệu</h1>
-          <div className="flex items-center justify-center gap-2 mb-8">
-            <div className="h-px w-8 bg-gold" />
-            <div className="h-1 w-1 rounded-full bg-gold" />
-            <div className="h-px w-4 bg-gold/40" />
+          <div className="flex items-center justify-center gap-3 mb-8">
+            <div className="h-px w-10 bg-gold" />
+            <div className="h-1.5 w-1.5 rounded-full bg-gold" />
+            <div className="h-px w-10 bg-gold" />
           </div>
           <p className="text-brown-muted leading-relaxed">
             {clinicInfo?.clinicName ?? "Phòng Khám Nhi Đồng"}

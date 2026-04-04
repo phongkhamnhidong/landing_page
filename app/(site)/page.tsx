@@ -12,7 +12,6 @@ import DoctorSection from "@/app/components/DoctorSection"
 import LatestKienThucSection from "@/app/components/LatestKienThucSection"
 import LatestNewsSection from "@/app/components/LatestNewsSection"
 import LatestFAQSection from "@/app/components/LatestFAQSection"
-import ContactSection from "@/app/components/ContactSection"
 import FadeInView from "@/app/components/FadeInView"
 
 export const revalidate = 60
@@ -52,14 +51,6 @@ export default async function HomePage() {
       </FadeInView>
       <FadeInView>
         <LatestFAQSection faqs={faqs} />
-      </FadeInView>
-      <FadeInView>
-        <ContactSection
-          phone={clinicInfo?.phone}
-          email={clinicInfo?.email}
-          address={clinicInfo?.address}
-          openingHours={clinicInfo?.openingHours}
-        />
       </FadeInView>
     </>
   )

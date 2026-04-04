@@ -19,7 +19,7 @@ export default function HeroSection({ clinicName, motto, tagline, phone }: Props
           <div className="flex items-center gap-3 mb-5">
             <div className="h-px w-10 bg-gold" />
             <div className="h-1.5 w-1.5 rounded-full bg-gold" />
-            <div className="h-px w-5 bg-gold/40" />
+            <div className="h-px w-10 bg-gold" />
           </div>
 
           {/* Motto */}

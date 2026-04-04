@@ -15,9 +15,9 @@ export default function ContactSection({ phone, email, address, openingHours }: 
           <p className="text-gold text-xs font-semibold uppercase tracking-[0.2em] mb-3">Liên hệ</p>
           <h2 className="font-serif text-3xl sm:text-4xl font-semibold text-cream">Liên Hệ Với Chúng Tôi</h2>
           <div className="flex items-center justify-center gap-2 mt-4">
-            <div className="h-px w-8 bg-gold" />
-            <div className="h-1 w-1 rounded-full bg-gold" />
-            <div className="h-px w-4 bg-gold/40" />
+            <div className="h-px w-10 bg-gold" />
+            <div className="h-1.5 w-1.5 rounded-full bg-gold" />
+            <div className="h-px w-10 bg-gold" />
           </div>
         </div>
 

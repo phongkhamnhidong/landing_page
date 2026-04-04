@@ -58,9 +58,10 @@ export default function DoctorSection({ doctor }: Props) {
               <p className="text-brown-muted text-sm mb-4">{doctor.qualifications}</p>
             )}
 
-            <div className="flex items-center gap-2 mb-6">
-              <div className="h-px w-8 bg-gold" />
-              <div className="h-1 w-1 rounded-full bg-gold" />
+            <div className="flex items-center gap-3 mb-6">
+              <div className="h-px w-10 bg-gold" />
+              <div className="h-1.5 w-1.5 rounded-full bg-gold" />
+              <div className="h-px w-10 bg-gold" />
             </div>
 
             {doctor.shortBio && (
