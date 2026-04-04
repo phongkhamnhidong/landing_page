@@ -7,6 +7,7 @@ import { client } from "@/sanity/lib/client"
 import { urlFor } from "@/sanity/lib/image"
 import { postBySlugQuery, allPostSlugsQuery, relatedPostsQuery } from "@/app/lib/queries"
 import { getView } from "@/app/actions/incrementView"
+import { estimateReadingTime } from "@/app/lib/readingTime"
 import ViewCounter from "@/app/components/ViewCounter"
 import PostCard from "@/app/components/PostCard"
 
@@ -86,6 +87,8 @@ export default async function BlogPostPage({ params }: Props) {
   ])
   if (!post) notFound()
 
+  const readingTime = estimateReadingTime(post.body)
+
   const relatedPosts = await client.fetch(relatedPostsQuery, {
     slug,
     section: post.section ?? "kienThuc",
@@ -114,11 +117,18 @@ export default async function BlogPostPage({ params }: Props) {
               {post.categoryTitle}
             </span>
           )}
-          <div className="flex items-center justify-center lg:justify-start gap-3 mb-3">
+          <div className="flex items-center justify-center lg:justify-start flex-wrap gap-x-3 gap-y-1 mb-3">
             {post.publishedAt && (
               <span className="text-xs text-brown-muted/60">{formatDate(post.publishedAt)}</span>
             )}
-            {post.publishedAt && <span className="text-brown-muted/30 text-xs">·</span>}
+            <span className="text-brown-muted/30 text-xs">·</span>
+            <span className="inline-flex items-center gap-1 text-xs text-brown-muted/60">
+              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6v6l4 2m6-2a10 10 0 1 1-20 0 10 10 0 0 1 20 0z" />
+              </svg>
+              {readingTime} phút đọc
+            </span>
+            <span className="text-brown-muted/30 text-xs">·</span>
             <ViewCounter viewKey={`views:post:${slug}`} initialCount={initialCount} />
           </div>
           <h1 className="font-serif text-3xl sm:text-4xl font-semibold text-navy leading-tight mb-4">
