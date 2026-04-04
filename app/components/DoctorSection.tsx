@@ -104,10 +104,10 @@ export default function DoctorSection({ doctor }: Props) {
               {/* Achievements */}
               {doctor.achievements && doctor.achievements.length > 0 && (
                 <div>
-                  <h4 className="font-semibold text-navy text-xs uppercase tracking-widest mb-3">
+                  <h4 className="font-semibold text-navy text-xs uppercase tracking-widest mb-3 text-center lg:text-left">
                     Thành tích
                   </h4>
-                  <ul className="space-y-1.5">
+                  <ul className="space-y-1.5 text-left">
                     {doctor.achievements.map((item, i) => (
                       <li key={i} className="flex items-start gap-2 text-sm text-brown-muted">
                         <span className="text-gold text-xs mt-1 shrink-0">✦</span>
