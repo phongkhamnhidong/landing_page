@@ -36,6 +36,18 @@ export const clinicInfoType = defineType({
       type: 'string',
     }),
     defineField({
+      name: 'zalo',
+      title: 'Zalo',
+      type: 'string',
+      description: 'Số điện thoại Zalo hoặc link zalo.me/...',
+    }),
+    defineField({
+      name: 'facebook',
+      title: 'Facebook',
+      type: 'url',
+      description: 'Link trang Facebook của phòng khám',
+    }),
+    defineField({
       name: 'address',
       title: 'Address',
       type: 'text',

@@ -38,9 +38,11 @@ export default async function HomePage() {
       </FadeInView>
       <FadeInView>
         <WorkingHoursSection
-          openingHours={clinicInfo?.openingHours}
+          schedule={clinicInfo?.schedule}
           address={clinicInfo?.address}
           phone={clinicInfo?.phone}
+          zalo={clinicInfo?.zalo}
+          facebook={clinicInfo?.facebook}
         />
       </FadeInView>
       <FadeInView>

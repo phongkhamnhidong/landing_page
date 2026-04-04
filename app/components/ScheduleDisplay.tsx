@@ -41,13 +41,15 @@ function formatCurrentDate() {
 export default function ScheduleDisplay({ schedule }: Props) {
   const todayKey = DAY_INDEX[new Date().getDay()]
 
-  // Normalise: if legacy openTime/closeTime present, fold into slots
+  // Normalise: prefer slots[] if present, otherwise fall back to legacy openTime/closeTime
   const normalised = schedule.map((item) => {
-    const legacySlot =
-      item.openTime || item.closeTime
-        ? [{ openTime: item.openTime, closeTime: item.closeTime }]
-        : []
-    return { ...item, slots: [...legacySlot, ...(item.slots ?? [])] }
+    const slots =
+      item.slots && item.slots.length > 0
+        ? item.slots
+        : item.openTime || item.closeTime
+          ? [{ openTime: item.openTime, closeTime: item.closeTime }]
+          : []
+    return { ...item, slots }
   })
 
   // Merge entries with the same day

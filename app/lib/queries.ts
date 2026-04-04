@@ -5,6 +5,8 @@ export const clinicInfoQuery = `*[_type == "clinicInfo"][0]{
   tagline,
   phone,
   email,
+  zalo,
+  facebook,
   address,
   schedule[]{day, isClosed, openTime, closeTime, slots[]{openTime, closeTime}}
 }`

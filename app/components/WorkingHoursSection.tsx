@@ -12,15 +12,21 @@ type Props = {
   schedule?: DaySchedule[]
   address?: string
   phone?: string
+  zalo?: string
+  facebook?: string
 }
 
-export default function WorkingHoursSection({ schedule, address, phone }: Props) {
+export default function WorkingHoursSection({ schedule, address, phone, zalo, facebook }: Props) {
   const mapsUrl = address
     ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`
     : null
 
   const embedUrl = address
     ? `https://maps.google.com/maps?q=${encodeURIComponent(address)}&output=embed&hl=vi`
+    : null
+
+  const zaloHref = zalo
+    ? zalo.startsWith("http") ? zalo : `https://zalo.me/${zalo.replace(/\s/g, "")}`
     : null
 
   return (
@@ -42,7 +48,7 @@ export default function WorkingHoursSection({ schedule, address, phone }: Props)
             )}
           </div>
 
-          {/* Map + Address + Phone */}
+          {/* Map + Address + Contact */}
           <div className="lg:col-span-2 flex flex-col gap-6">
             {/* Map */}
             {embedUrl && (
@@ -81,21 +87,20 @@ export default function WorkingHoursSection({ schedule, address, phone }: Props)
                 )}
               </div>
 
-              {/* Phone */}
-              {phone && (
-                <div className="bg-white rounded-xl p-7 border border-border">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-9 h-9 rounded-full bg-navy/10 flex items-center justify-center text-lg shrink-0">📞</div>
-                    <h3 className="font-serif font-semibold text-navy">Liên Hệ</h3>
-                  </div>
-                  <a
-                    href={`tel:${phone.replace(/\s/g, "")}`}
-                    className="text-sm text-navy font-medium hover:text-gold transition-colors"
-                  >
+              {/* Contact: Phone + Zalo + Facebook */}
+              <div className="bg-white rounded-xl p-7 border border-border">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-9 h-9 rounded-full bg-navy/10 flex items-center justify-center text-lg shrink-0">📞</div>
+                  <h3 className="font-serif font-semibold text-navy">Liên Hệ</h3>
+                </div>
+                {phone ? (
+                  <a href={`tel:${phone.replace(/\s/g, "")}`} className="text-sm font-medium text-navy hover:text-gold transition-colors">
                     {phone}
                   </a>
-                </div>
-              )}
+                ) : (
+                  <p className="text-brown-muted text-sm">Vui lòng cập nhật trong Sanity Studio</p>
+                )}
+              </div>
             </div>
           </div>
         </div>
