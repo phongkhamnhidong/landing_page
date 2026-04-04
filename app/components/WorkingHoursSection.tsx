@@ -37,7 +37,7 @@ export default function WorkingHoursSection({ schedule, address, phone, zalo, fa
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
           {/* Schedule */}
           <div className="lg:col-span-1 bg-white rounded-xl p-7 border border-border">
-            <div className="flex items-center gap-3 mb-5">
+            <div className="flex items-center justify-center lg:justify-start gap-3 mb-5">
               <div className="w-9 h-9 rounded-full bg-navy/10 flex items-center justify-center text-lg shrink-0">🕐</div>
               <h3 className="font-serif font-semibold text-navy">Giờ Làm Việc</h3>
             </div>
@@ -68,8 +68,8 @@ export default function WorkingHoursSection({ schedule, address, phone, zalo, fa
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {/* Address */}
-              <div className="bg-white rounded-xl p-7 border border-border">
-                <div className="flex items-center gap-3 mb-4">
+              <div className="bg-white rounded-xl p-7 border border-border text-center lg:text-left">
+                <div className="flex items-center justify-center lg:justify-start gap-3 mb-4">
                   <div className="w-9 h-9 rounded-full bg-navy/10 flex items-center justify-center text-lg shrink-0">📍</div>
                   <h3 className="font-serif font-semibold text-navy">Địa Chỉ</h3>
                 </div>
@@ -87,9 +87,9 @@ export default function WorkingHoursSection({ schedule, address, phone, zalo, fa
                 )}
               </div>
 
-              {/* Contact: Phone + Zalo + Facebook */}
-              <div className="bg-white rounded-xl p-7 border border-border">
-                <div className="flex items-center gap-3 mb-4">
+              {/* Contact: Phone */}
+              <div className="bg-white rounded-xl p-7 border border-border text-center lg:text-left">
+                <div className="flex items-center justify-center lg:justify-start gap-3 mb-4">
                   <div className="w-9 h-9 rounded-full bg-navy/10 flex items-center justify-center text-lg shrink-0">📞</div>
                   <h3 className="font-serif font-semibold text-navy">Liên Hệ</h3>
                 </div>

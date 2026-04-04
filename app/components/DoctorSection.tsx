@@ -36,17 +36,17 @@ export default function DoctorSection({ doctor }: Props) {
                 alt={doctor.photo?.alt ?? doctor.name ?? "Bác sĩ"}
                 width={600}
                 height={700}
-                className="w-full h-72 lg:h-full object-cover object-top"
+                className="w-full h-96 lg:h-full object-cover object-top"
               />
             ) : (
-              <div className="w-full h-72 lg:h-full bg-beige-dark flex items-center justify-center">
+              <div className="w-full h-96 lg:h-full bg-beige-dark flex items-center justify-center">
                 <span className="text-6xl opacity-20">👩‍⚕️</span>
               </div>
             )}
           </div>
 
           {/* Info — 3/5 width */}
-          <div className="lg:col-span-3 p-8 lg:p-10 bg-white">
+          <div className="lg:col-span-3 p-8 lg:p-10 bg-white text-center lg:text-left">
             {/* Name + title */}
             <p className="text-gold text-xs font-semibold uppercase tracking-[0.2em] mb-1">
               {doctor.title ?? "Bác sĩ Nhi khoa"}
@@ -58,7 +58,7 @@ export default function DoctorSection({ doctor }: Props) {
               <p className="text-brown-muted text-sm mb-4">{doctor.qualifications}</p>
             )}
 
-            <div className="flex items-center gap-3 mb-6">
+            <div className="flex items-center justify-center lg:justify-start gap-3 mb-6">
               <div className="h-px w-10 bg-gold" />
               <div className="h-1.5 w-1.5 rounded-full bg-gold" />
               <div className="h-px w-10 bg-gold" />
