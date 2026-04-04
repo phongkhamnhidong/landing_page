@@ -25,15 +25,14 @@ export default async function KienThucPage() {
                 <Link
                   key={cat.slug}
                   href={`/kien-thuc/${cat.slug}`}
-                  className="group bg-white rounded-xl border border-border p-6 hover:shadow-md hover:border-gold/40 transition-all"
+                  className="group bg-white rounded-xl border border-border p-6 hover:shadow-md hover:border-gold/40 transition-all text-center"
                 >
-                  <h3 className="font-serif font-semibold text-navy group-hover:text-gold transition-colors text-sm leading-snug mb-2">
+                  <h3 className="font-serif font-semibold text-navy group-hover:text-gold transition-colors text-sm leading-snug">
                     {cat.title}
                   </h3>
                   {cat.description && (
-                    <p className="text-xs text-brown-muted/70 line-clamp-2">{cat.description}</p>
+                    <p className="text-xs text-brown-muted/70 line-clamp-2 mt-2">{cat.description}</p>
                   )}
-                  <div className="mt-3 text-gold text-xs font-medium">Xem bài →</div>
                 </Link>
               ))}
             </div>
