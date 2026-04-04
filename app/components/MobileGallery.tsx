@@ -36,6 +36,8 @@ export default function MobileGallery({ images }: { images: GalleryImage[] }) {
   if (!shuffled.length) return null
 
   const thumbCount = Math.min(shuffled.length, 4)
+  const thumbStart = Math.max(0, Math.min(activeIndex - 1, shuffled.length - thumbCount))
+  const thumbs = shuffled.slice(thumbStart, thumbStart + thumbCount)
 
   return (
     // Only visible on mobile (hidden on lg+)
@@ -59,19 +61,22 @@ export default function MobileGallery({ images }: { images: GalleryImage[] }) {
           {/* Thumbnails */}
           {shuffled.length > 1 && (
             <div className="grid gap-2" style={{ gridTemplateColumns: `repeat(${thumbCount}, 1fr)` }}>
-              {shuffled.slice(0, thumbCount).map((img, i) => (
-                <button
-                  key={i}
-                  onClick={() => advance(i)}
-                  className={`relative h-16 rounded-xl overflow-hidden border-2 transition-all duration-300 focus:outline-none ${
-                    i === activeIndex % thumbCount
-                      ? "border-gold scale-[1.04] shadow-md"
-                      : "border-border/60 opacity-65 hover:opacity-100"
-                  }`}
-                >
-                  <Image src={img.url} alt={img.alt ?? ""} fill className="object-cover" sizes="120px" />
-                </button>
-              ))}
+              {thumbs.map((img, i) => {
+                const globalIndex = thumbStart + i
+                return (
+                  <button
+                    key={img.url + globalIndex}
+                    onClick={() => advance(globalIndex)}
+                    className={`relative h-16 rounded-xl overflow-hidden border-2 transition-all duration-300 focus:outline-none ${
+                      globalIndex === activeIndex
+                        ? "border-gold scale-[1.04] shadow-md"
+                        : "border-border/60 opacity-65 hover:opacity-100"
+                    }`}
+                  >
+                    <Image src={img.url} alt={img.alt ?? ""} fill className="object-cover" sizes="120px" />
+                  </button>
+                )
+              })}
             </div>
           )}
 

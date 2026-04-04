@@ -52,23 +52,31 @@ export default function HeroGallery({ images }: { images: GalleryImage[] }) {
       </div>
 
       {/* Thumbnails */}
-      {shuffled.length > 1 && (
-        <div className={`grid gap-3`} style={{ gridTemplateColumns: `repeat(${Math.min(shuffled.length, 4)}, 1fr)` }}>
-          {shuffled.slice(0, 4).map((img, i) => (
-            <button
-              key={i}
-              onClick={() => advance(i)}
-              className={`relative h-20 rounded-xl overflow-hidden border-2 transition-all duration-300 focus:outline-none ${
-                i === activeIndex % Math.min(shuffled.length, 4)
-                  ? "border-gold scale-[1.04] shadow-md"
-                  : "border-border/60 opacity-65 hover:opacity-100 hover:border-gold/40"
-              }`}
-            >
-              <Image src={img.url} alt={img.alt ?? ""} fill className="object-cover" sizes="160px" />
-            </button>
-          ))}
-        </div>
-      )}
+      {shuffled.length > 1 && (() => {
+        const thumbCount = Math.min(shuffled.length, 4)
+        const thumbStart = Math.max(0, Math.min(activeIndex - 1, shuffled.length - thumbCount))
+        const thumbs = shuffled.slice(thumbStart, thumbStart + thumbCount)
+        return (
+          <div className="grid gap-3" style={{ gridTemplateColumns: `repeat(${thumbCount}, 1fr)` }}>
+            {thumbs.map((img, i) => {
+              const globalIndex = thumbStart + i
+              return (
+                <button
+                  key={img.url + globalIndex}
+                  onClick={() => advance(globalIndex)}
+                  className={`relative h-20 rounded-xl overflow-hidden border-2 transition-all duration-300 focus:outline-none ${
+                    globalIndex === activeIndex
+                      ? "border-gold scale-[1.04] shadow-md"
+                      : "border-border/60 opacity-65 hover:opacity-100 hover:border-gold/40"
+                  }`}
+                >
+                  <Image src={img.url} alt={img.alt ?? ""} fill className="object-cover" sizes="160px" />
+                </button>
+              )
+            })}
+          </div>
+        )
+      })()}
 
       {/* Dots for overflow images */}
       {shuffled.length > 4 && (
