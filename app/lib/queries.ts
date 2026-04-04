@@ -63,6 +63,24 @@ export const latestFaqQuery = `*[_type == "faq"] | order(publishedAt desc)[0...3
   answer
 }`
 
+// Kiến Thức post search
+export const kienThucSearchQuery = `*[_type == "post" && section == "kienThuc" && title match $q] | order(publishedAt desc){
+  title,
+  "slug": slug.current,
+  mainImage,
+  publishedAt,
+  "categoryTitle": categories[0]->title,
+  "categorySlug": categories[0]->slug.current
+}`
+
+// Tin Tức post search
+export const tinTucSearchQuery = `*[_type == "post" && section == "tinTuc" && title match $q] | order(publishedAt desc){
+  title,
+  "slug": slug.current,
+  mainImage,
+  publishedAt
+}`
+
 // All kienThuc posts (listing page)
 export const allKienThucQuery = `*[_type == "post" && section == "kienThuc"] | order(publishedAt desc)[0...9]{
   title,
