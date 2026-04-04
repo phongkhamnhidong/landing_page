@@ -1,4 +1,5 @@
 import HeroGallery from "./HeroGallery"
+import CyclingText from "./CyclingText"
 
 type GalleryImage = {
   url: string
@@ -11,9 +12,10 @@ type Props = {
   tagline?: string
   phone?: string
   galleryImages?: GalleryImage[]
+  treatmentAreas?: string[]
 }
 
-export default function HeroSection({ clinicName, motto, tagline, phone, galleryImages }: Props) {
+export default function HeroSection({ clinicName, motto, tagline, phone, galleryImages, treatmentAreas }: Props) {
   const hasImages = galleryImages && galleryImages.length > 0
 
   return (
@@ -38,6 +40,13 @@ export default function HeroSection({ clinicName, motto, tagline, phone, gallery
             <p className="text-gold font-semibold text-sm sm:text-base tracking-[0.18em] uppercase mb-5">
               {motto ?? "CHẤT LƯỢNG – HIỆU QUẢ – TẬN TÂM"}
             </p>
+
+            {/* Cycling treatment areas */}
+            {treatmentAreas && treatmentAreas.length > 0 && (
+              <div className="mb-5">
+                <CyclingText items={treatmentAreas} />
+              </div>
+            )}
 
             {/* Tagline */}
             {tagline && (

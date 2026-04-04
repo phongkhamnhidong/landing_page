@@ -34,6 +34,7 @@ export default async function HomePage() {
         tagline={clinicInfo?.tagline}
         phone={clinicInfo?.phone}
         galleryImages={clinicInfo?.galleryImages}
+        treatmentAreas={doctor?.treatmentAreas}
       />
       <FadeInView>
         <DoctorSection doctor={doctor} />
