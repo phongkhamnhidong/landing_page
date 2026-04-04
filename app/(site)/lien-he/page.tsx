@@ -15,8 +15,8 @@ export default async function LienHePage() {
     : null
 
   return (
-    <div className="pt-16">
-      <section className="py-20 bg-beige">
+    <div className="pt-16 bg-beige">
+      <section className="py-20">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader label="Liên hệ" title="Liên Hệ Với Chúng Tôi" />
 
