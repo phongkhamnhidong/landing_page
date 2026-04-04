@@ -112,7 +112,15 @@ export const postBySlugQuery = `*[_type == "post" && slug.current == $slug][0]{
   section,
   mainImage,
   publishedAt,
-  body,
+  body[]{
+    ...,
+    _type == "image" => {
+      ...,
+      "url": asset->url,
+      "dimensions": asset->metadata.dimensions
+    }
+  },
+  references[]{title, url},
   "authorName": author->name,
   "categoryTitle": categories[0]->title,
   "categorySlug": categories[0]->slug.current

@@ -69,6 +69,22 @@ export const postType = defineType({
       title: 'Nội dung',
       type: 'blockContent',
     }),
+    defineField({
+      name: 'references',
+      title: 'Tài liệu tham khảo',
+      type: 'array',
+      description: 'Các nguồn tham khảo được sử dụng trong bài viết',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            {name: 'title', title: 'Tên tài liệu', type: 'string'},
+            {name: 'url', title: 'Đường dẫn', type: 'url'},
+          ],
+          preview: {select: {title: 'title', subtitle: 'url'}},
+        },
+      ],
+    }),
   ],
   preview: {
     select: {

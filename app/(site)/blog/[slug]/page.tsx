@@ -28,6 +28,41 @@ function formatDate(dateStr?: string) {
   return new Date(dateStr).toLocaleDateString("vi-VN", { day: "2-digit", month: "long", year: "numeric" })
 }
 
+// Custom PortableText components
+const portableTextComponents = {
+  types: {
+    image: ({ value }: { value: { url?: string; alt?: string; dimensions?: { width: number; height: number } } }) => {
+      if (!value?.url) return null
+      const { width = 800, height = 600 } = value.dimensions ?? {}
+      return (
+        <figure className="my-8 flex flex-col items-center">
+          <div className="rounded-xl overflow-hidden border border-border inline-block">
+            <Image
+              src={value.url}
+              alt={value.alt ?? ""}
+              width={width}
+              height={height}
+              className="object-cover block"
+              style={{ maxWidth: "100%", height: "auto" }}
+            />
+          </div>
+          {value.alt && (
+            <figcaption className="text-center text-xs text-brown-muted/60 mt-2 italic">{value.alt}</figcaption>
+          )}
+        </figure>
+      )
+    },
+  },
+  marks: {
+    underline: ({ children }: { children?: React.ReactNode }) => <span className="underline">{children}</span>,
+    link: ({ value, children }: { value?: { href?: string }; children?: React.ReactNode }) => (
+      <a href={value?.href} target="_blank" rel="noopener noreferrer" className="text-gold hover:underline">
+        {children}
+      </a>
+    ),
+  },
+}
+
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params
   const post = await client.fetch(postBySlugQuery, { slug })
@@ -49,7 +84,7 @@ export default async function BlogPostPage({ params }: Props) {
           </Link>
         </div>
 
-        <header className="mb-10">
+        <header className="mb-10 text-center lg:text-left">
           {post.categoryTitle && (
             <span className="text-[10px] font-semibold uppercase tracking-wide text-gold bg-gold/10 px-2 py-0.5 rounded-full mb-4 inline-block">
               {post.categoryTitle}
@@ -61,7 +96,7 @@ export default async function BlogPostPage({ params }: Props) {
           <h1 className="font-serif text-3xl sm:text-4xl font-semibold text-navy leading-tight mb-4">
             {post.title}
           </h1>
-          <div className="flex items-center gap-3 mb-4">
+          <div className="flex items-center justify-center lg:justify-start gap-3 mb-4">
             <div className="h-px w-10 bg-gold" />
             <div className="h-1.5 w-1.5 rounded-full bg-gold" />
             <div className="h-px w-10 bg-gold" />
@@ -86,7 +121,28 @@ export default async function BlogPostPage({ params }: Props) {
 
         {post.body && (
           <div className="prose prose-lg prose-headings:font-serif prose-headings:text-navy prose-a:text-gold max-w-none text-brown-muted">
-            <PortableText value={post.body} />
+            <PortableText value={post.body} components={portableTextComponents} />
+          </div>
+        )}
+
+        {/* References */}
+        {post.references && post.references.length > 0 && (
+          <div className="mt-12 pt-8 border-t border-border">
+            <h2 className="font-serif text-lg font-semibold text-navy mb-4">Tài Liệu Tham Khảo</h2>
+            <ol className="space-y-2">
+              {post.references.map((ref: { title?: string; url?: string }, i: number) => (
+                <li key={i} className="flex gap-2 text-sm text-brown-muted">
+                  <span className="text-gold font-semibold shrink-0">[{i + 1}]</span>
+                  {ref.url ? (
+                    <a href={ref.url} target="_blank" rel="noopener noreferrer" className="hover:text-navy hover:underline transition-colors break-all">
+                      {ref.title ?? ref.url}
+                    </a>
+                  ) : (
+                    <span>{ref.title}</span>
+                  )}
+                </li>
+              ))}
+            </ol>
           </div>
         )}
       </article>
