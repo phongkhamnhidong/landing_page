@@ -6,6 +6,8 @@ import { PortableText } from "@portabletext/react"
 import { client } from "@/sanity/lib/client"
 import { urlFor } from "@/sanity/lib/image"
 import { postBySlugQuery, allPostSlugsQuery } from "@/app/lib/queries"
+import { getView } from "@/app/actions/incrementView"
+import ViewCounter from "@/app/components/ViewCounter"
 
 export const revalidate = 60
 
@@ -77,7 +79,10 @@ const portableTextComponents = {
 
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params
-  const post = await client.fetch(postBySlugQuery, { slug })
+  const [post, initialCount] = await Promise.all([
+    client.fetch(postBySlugQuery, { slug }),
+    getView(`views:post:${slug}`),
+  ])
   if (!post) notFound()
 
   const imageUrl = post.mainImage?.asset
@@ -102,9 +107,13 @@ export default async function BlogPostPage({ params }: Props) {
               {post.categoryTitle}
             </span>
           )}
-          {post.publishedAt && (
-            <p className="text-xs text-brown-muted/60 mb-3">{formatDate(post.publishedAt)}</p>
-          )}
+          <div className="flex items-center justify-center lg:justify-start gap-3 mb-3">
+            {post.publishedAt && (
+              <span className="text-xs text-brown-muted/60">{formatDate(post.publishedAt)}</span>
+            )}
+            {post.publishedAt && <span className="text-brown-muted/30 text-xs">·</span>}
+            <ViewCounter viewKey={`views:post:${slug}`} initialCount={initialCount} />
+          </div>
           <h1 className="font-serif text-3xl sm:text-4xl font-semibold text-navy leading-tight mb-4">
             {post.title}
           </h1>

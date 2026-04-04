@@ -3,6 +3,8 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { client } from "@/sanity/lib/client"
 import { faqByIdQuery } from "@/app/lib/queries"
+import { getView } from "@/app/actions/incrementView"
+import ViewCounter from "@/app/components/ViewCounter"
 
 export const revalidate = 60
 
@@ -25,7 +27,10 @@ function formatDate(dateStr?: string) {
 
 export default async function FaqDetailPage({ params }: Props) {
   const { id } = await params
-  const faq = await client.fetch(faqByIdQuery, { id })
+  const [faq, initialCount] = await Promise.all([
+    client.fetch(faqByIdQuery, { id }),
+    getView(`views:faq:${id}`),
+  ])
   if (!faq) notFound()
 
   return (
@@ -59,12 +64,11 @@ export default async function FaqDetailPage({ params }: Props) {
           </div>
 
           {/* Meta */}
-          {(faq.publishedAt || faq.submitterName) && (
-            <div className="mt-8 pt-6 border-t border-border flex flex-wrap gap-x-6 gap-y-1 text-xs text-brown-muted/60">
-              {faq.publishedAt && <span>Ngày đăng: {formatDate(faq.publishedAt)}</span>}
-              {faq.submitterName && <span>Câu hỏi từ: {faq.submitterName}</span>}
-            </div>
-          )}
+          <div className="mt-8 pt-6 border-t border-border flex flex-wrap items-center gap-x-6 gap-y-1 text-xs text-brown-muted/60">
+            {faq.publishedAt && <span>Ngày đăng: {formatDate(faq.publishedAt)}</span>}
+            {faq.submitterName && <span>Câu hỏi từ: {faq.submitterName}</span>}
+            <ViewCounter viewKey={`views:faq:${id}`} initialCount={initialCount} />
+          </div>
         </div>
 
         {/* Back link */}
