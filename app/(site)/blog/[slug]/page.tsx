@@ -35,17 +35,15 @@ const portableTextComponents = {
       if (!value?.url) return null
       const { width = 800, height = 600 } = value.dimensions ?? {}
       return (
-        <figure className="my-8 flex flex-col items-center">
-          <div className="rounded-xl overflow-hidden border border-border inline-block">
-            <Image
-              src={value.url}
-              alt={value.alt ?? ""}
-              width={width}
-              height={height}
-              className="object-cover block"
-              style={{ maxWidth: "100%", height: "auto" }}
-            />
-          </div>
+        <figure className="my-8">
+          <Image
+            src={value.url}
+            alt={value.alt ?? ""}
+            width={width}
+            height={height}
+            className="rounded-xl border border-border"
+            style={{ maxWidth: "100%", height: "auto" }}
+          />
           {value.alt && (
             <figcaption className="text-center text-xs text-brown-muted/60 mt-2 italic">{value.alt}</figcaption>
           )}
