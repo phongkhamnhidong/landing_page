@@ -8,6 +8,20 @@ export const categoryType = defineType({
   icon: TagIcon,
   fields: [
     defineField({
+      name: 'section',
+      title: 'Phân mục',
+      type: 'string',
+      options: {
+        list: [
+          {title: 'Kiến Thức Y Khoa', value: 'kienThuc'},
+          {title: 'Tin Tức', value: 'tinTuc'},
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'kienThuc',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: 'title',
       type: 'string',
     }),

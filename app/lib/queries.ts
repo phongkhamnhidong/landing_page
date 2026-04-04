@@ -13,8 +13,15 @@ export const clinicInfoQuery = `*[_type == "clinicInfo"][0]{
   about
 }`
 
-// Categories for nav dropdown + listing page
-export const categoriesQuery = `*[_type == "category"] | order(title asc){
+// Kiến Thức categories for nav dropdown + listing page
+export const categoriesQuery = `*[_type == "category" && section == "kienThuc"] | order(title asc){
+  title,
+  "slug": slug.current,
+  description
+}`
+
+// Tin Tức categories for nav dropdown + listing page
+export const tinTucCategoriesQuery = `*[_type == "category" && section == "tinTuc"] | order(title asc){
   title,
   "slug": slug.current,
   description
@@ -65,8 +72,16 @@ export const allKienThucQuery = `*[_type == "post" && section == "kienThuc"] | o
   "categorySlug": categories[0]->slug.current
 }`
 
-// Posts by category slug
+// Posts by category slug (Kiến Thức)
 export const postsByCategoryQuery = `*[_type == "post" && section == "kienThuc" && $categorySlug in categories[]->slug.current] | order(publishedAt desc){
+  title,
+  "slug": slug.current,
+  mainImage,
+  publishedAt
+}`
+
+// Posts by category slug (Tin Tức)
+export const tinTucPostsByCategoryQuery = `*[_type == "post" && section == "tinTuc" && $categorySlug in categories[]->slug.current] | order(publishedAt desc){
   title,
   "slug": slug.current,
   mainImage,
@@ -129,5 +144,8 @@ export const postBySlugQuery = `*[_type == "post" && slug.current == $slug][0]{
 // All post slugs (for generateStaticParams)
 export const allPostSlugsQuery = `*[_type == "post" && defined(slug.current)]{ "slug": slug.current }`
 
-// All category slugs (for generateStaticParams)
-export const allCategorySlugsQuery = `*[_type == "category" && defined(slug.current)]{ "slug": slug.current }`
+// All Kiến Thức category slugs (for generateStaticParams)
+export const allCategorySlugsQuery = `*[_type == "category" && section == "kienThuc" && defined(slug.current)]{ "slug": slug.current }`
+
+// All Tin Tức category slugs (for generateStaticParams)
+export const allTinTucCategorySlugsQuery = `*[_type == "category" && section == "tinTuc" && defined(slug.current)]{ "slug": slug.current }`

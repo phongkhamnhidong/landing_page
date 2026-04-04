@@ -9,19 +9,44 @@ type Props = {
   clinicName: string
   phone?: string
   categories: Category[]
+  tinTucCategories: Category[]
 }
 
-export default function NavbarClient({ clinicName, phone, categories }: Props) {
+export default function NavbarClient({ clinicName, phone, categories, tinTucCategories }: Props) {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [kienThucOpen, setKienThucOpen] = useState(false)
+  const [tinTucOpen, setTinTucOpen] = useState(false)
 
   const navLinks = [
     { label: "Trang Chủ", href: "/" },
     { label: "Giới Thiệu", href: "/gioi-thieu" },
-    { label: "Tin Tức", href: "/tin-tuc" },
     { label: "Hỏi Đáp", href: "/hoi-dap" },
     { label: "Liên Hệ", href: "/lien-he" },
   ]
+
+  const ChevronIcon = ({ open }: { open?: boolean }) => (
+    <svg className={`w-3 h-3 mt-0.5 transition-transform ${open ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+    </svg>
+  )
+
+  const DropdownMenu = ({ items, basePath }: { items: Category[]; basePath: string }) => (
+    <div className="absolute top-full left-1/2 -translate-x-1/2 pt-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+      <div className="bg-white border border-border rounded-xl shadow-lg p-4 w-72">
+        <div className="grid grid-cols-2 gap-1">
+          {items.map((cat) => (
+            <Link
+              key={cat.slug}
+              href={`${basePath}/${cat.slug}`}
+              className="text-xs text-brown-muted hover:text-navy hover:bg-beige px-3 py-2 rounded-lg transition-colors"
+            >
+              {cat.title}
+            </Link>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-cream border-b border-border shadow-sm">
@@ -34,46 +59,27 @@ export default function NavbarClient({ clinicName, phone, categories }: Props) {
 
           {/* Desktop nav */}
           <div className="hidden lg:flex items-center gap-6 text-sm font-medium text-brown-muted">
-            {navLinks.slice(0, 2).map((link) => (
-              <Link key={link.href} href={link.href} className="hover:text-navy transition-colors">
-                {link.label}
-              </Link>
-            ))}
+            <Link href="/" className="hover:text-navy transition-colors">Trang Chủ</Link>
+            <Link href="/gioi-thieu" className="hover:text-navy transition-colors">Giới Thiệu</Link>
 
             {/* Kiến Thức dropdown */}
             <div className="relative group">
-              <Link
-                href="/kien-thuc"
-                className="flex items-center gap-1 hover:text-navy transition-colors"
-              >
-                Kiến Thức
-                <svg className="w-3 h-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
+              <Link href="/kien-thuc" className="flex items-center gap-1 hover:text-navy transition-colors">
+                Kiến Thức <ChevronIcon />
               </Link>
-              {/* Dropdown */}
-              <div className="absolute top-full left-1/2 -translate-x-1/2 pt-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                <div className="bg-white border border-border rounded-xl shadow-lg p-4 w-72">
-                  <div className="grid grid-cols-2 gap-1">
-                    {categories.map((cat) => (
-                      <Link
-                        key={cat.slug}
-                        href={`/kien-thuc/${cat.slug}`}
-                        className="text-xs text-brown-muted hover:text-navy hover:bg-beige px-3 py-2 rounded-lg transition-colors"
-                      >
-                        {cat.title}
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              </div>
+              {categories.length > 0 && <DropdownMenu items={categories} basePath="/kien-thuc" />}
             </div>
 
-            {navLinks.slice(2).map((link) => (
-              <Link key={link.href} href={link.href} className="hover:text-navy transition-colors">
-                {link.label}
+            {/* Tin Tức dropdown */}
+            <div className="relative group">
+              <Link href="/tin-tuc" className="flex items-center gap-1 hover:text-navy transition-colors">
+                Tin Tức <ChevronIcon />
               </Link>
-            ))}
+              {tinTucCategories.length > 0 && <DropdownMenu items={tinTucCategories} basePath="/tin-tuc" />}
+            </div>
+
+            <Link href="/hoi-dap" className="hover:text-navy transition-colors">Hỏi Đáp</Link>
+            <Link href="/lien-he" className="hover:text-navy transition-colors">Liên Hệ</Link>
           </div>
 
           {/* CTA + hamburger */}
@@ -104,16 +110,8 @@ export default function NavbarClient({ clinicName, phone, categories }: Props) {
         {/* Mobile menu */}
         {mobileOpen && (
           <div className="lg:hidden border-t border-border py-4 space-y-1">
-            {navLinks.slice(0, 2).map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={() => setMobileOpen(false)}
-                className="block px-4 py-2 text-sm text-brown-muted hover:text-navy hover:bg-beige rounded-lg transition-colors"
-              >
-                {link.label}
-              </Link>
-            ))}
+            <Link href="/" onClick={() => setMobileOpen(false)} className="block px-4 py-2 text-sm text-brown-muted hover:text-navy hover:bg-beige rounded-lg transition-colors">Trang Chủ</Link>
+            <Link href="/gioi-thieu" onClick={() => setMobileOpen(false)} className="block px-4 py-2 text-sm text-brown-muted hover:text-navy hover:bg-beige rounded-lg transition-colors">Giới Thiệu</Link>
 
             {/* Kiến Thức accordion */}
             <div>
@@ -122,19 +120,13 @@ export default function NavbarClient({ clinicName, phone, categories }: Props) {
                 className="w-full flex items-center justify-between px-4 py-2 text-sm text-brown-muted hover:text-navy hover:bg-beige rounded-lg transition-colors"
               >
                 <span>Kiến Thức</span>
-                <svg className={`w-3 h-3 transition-transform ${kienThucOpen ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
+                <ChevronIcon open={kienThucOpen} />
               </button>
               {kienThucOpen && (
                 <div className="ml-4 mt-1 space-y-1">
                   {categories.map((cat) => (
-                    <Link
-                      key={cat.slug}
-                      href={`/kien-thuc/${cat.slug}`}
-                      onClick={() => setMobileOpen(false)}
-                      className="block px-4 py-1.5 text-xs text-brown-muted hover:text-navy hover:bg-beige rounded-lg transition-colors"
-                    >
+                    <Link key={cat.slug} href={`/kien-thuc/${cat.slug}`} onClick={() => setMobileOpen(false)}
+                      className="block px-4 py-1.5 text-xs text-brown-muted hover:text-navy hover:bg-beige rounded-lg transition-colors">
                       {cat.title}
                     </Link>
                   ))}
@@ -142,22 +134,32 @@ export default function NavbarClient({ clinicName, phone, categories }: Props) {
               )}
             </div>
 
-            {navLinks.slice(2).map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={() => setMobileOpen(false)}
-                className="block px-4 py-2 text-sm text-brown-muted hover:text-navy hover:bg-beige rounded-lg transition-colors"
+            {/* Tin Tức accordion */}
+            <div>
+              <button
+                onClick={() => setTinTucOpen(!tinTucOpen)}
+                className="w-full flex items-center justify-between px-4 py-2 text-sm text-brown-muted hover:text-navy hover:bg-beige rounded-lg transition-colors"
               >
-                {link.label}
-              </Link>
-            ))}
+                <span>Tin Tức</span>
+                <ChevronIcon open={tinTucOpen} />
+              </button>
+              {tinTucOpen && tinTucCategories.length > 0 && (
+                <div className="ml-4 mt-1 space-y-1">
+                  {tinTucCategories.map((cat) => (
+                    <Link key={cat.slug} href={`/tin-tuc/${cat.slug}`} onClick={() => setMobileOpen(false)}
+                      className="block px-4 py-1.5 text-xs text-brown-muted hover:text-navy hover:bg-beige rounded-lg transition-colors">
+                      {cat.title}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <Link href="/hoi-dap" onClick={() => setMobileOpen(false)} className="block px-4 py-2 text-sm text-brown-muted hover:text-navy hover:bg-beige rounded-lg transition-colors">Hỏi Đáp</Link>
+            <Link href="/lien-he" onClick={() => setMobileOpen(false)} className="block px-4 py-2 text-sm text-brown-muted hover:text-navy hover:bg-beige rounded-lg transition-colors">Liên Hệ</Link>
 
             {phone && (
-              <a
-                href={`tel:${phone.replace(/\s/g, "")}`}
-                className="block mx-4 mt-3 text-center bg-navy text-cream text-sm font-medium py-2.5 rounded-full"
-              >
+              <a href={`tel:${phone.replace(/\s/g, "")}`} className="block mx-4 mt-3 text-center bg-navy text-cream text-sm font-medium py-2.5 rounded-full">
                 📞 {phone}
               </a>
             )}

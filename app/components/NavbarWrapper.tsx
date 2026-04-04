@@ -1,18 +1,20 @@
 import { client } from "@/sanity/lib/client"
-import { clinicInfoQuery, categoriesQuery } from "@/app/lib/queries"
+import { clinicInfoQuery, categoriesQuery, tinTucCategoriesQuery } from "@/app/lib/queries"
 import NavbarClient from "./NavbarClient"
 
 export default async function NavbarWrapper() {
-  const [clinicInfo, categories] = await Promise.all([
+  const [clinicInfo, kienThucCategories, tinTucCategories] = await Promise.all([
     client.fetch(clinicInfoQuery),
     client.fetch(categoriesQuery),
+    client.fetch(tinTucCategoriesQuery),
   ])
 
   return (
     <NavbarClient
       clinicName={clinicInfo?.clinicName ?? "Phòng Khám Nhi Đồng"}
       phone={clinicInfo?.phone}
-      categories={categories ?? []}
+      categories={kienThucCategories ?? []}
+      tinTucCategories={tinTucCategories ?? []}
     />
   )
 }
