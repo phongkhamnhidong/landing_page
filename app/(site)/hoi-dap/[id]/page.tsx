@@ -53,13 +53,13 @@ export default async function FaqDetailPage({ params }: Props) {
 
           {/* Question */}
           <div className="flex items-start gap-4 mb-8 pb-8 border-b border-border">
-            <span className="font-serif text-3xl text-gold leading-none shrink-0 mt-1">Q</span>
+            <span className="font-serif text-3xl text-gold leading-none shrink-0 mt-1">CH</span>
             <p className="font-serif text-xl font-semibold text-navy leading-snug">{faq.question}</p>
           </div>
 
           {/* Answer */}
           <div className="flex items-start gap-4">
-            <span className="font-serif text-3xl text-brown-muted/40 leading-none shrink-0 mt-1">A</span>
+            <span className="font-serif text-3xl text-brown-muted/40 leading-none shrink-0 mt-1">TL</span>
             <p className="text-brown-muted leading-relaxed whitespace-pre-line">{faq.answer}</p>
           </div>
 

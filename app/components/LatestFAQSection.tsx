@@ -21,11 +21,11 @@ export default function LatestFAQSection({ faqs }: Props) {
           {faqs.map((faq) => (
             <div key={faq._id} className="bg-white rounded-xl border border-border p-6">
               <div className="flex items-start gap-3">
-                <span className="text-gold font-serif text-xl leading-none mt-0.5">Q</span>
+                <span className="text-gold font-serif text-xl leading-none mt-0.5">CH</span>
                 <div>
                   <p className="font-semibold text-navy text-sm mb-3">{faq.question}</p>
                   <div className="flex items-start gap-3">
-                    <span className="font-serif text-xl text-brown-muted/50 leading-none shrink-0">A</span>
+                    <span className="font-serif text-xl text-brown-muted/50 leading-none shrink-0">TL</span>
                     <p className="text-brown-muted text-sm leading-relaxed line-clamp-3">{faq.answer}</p>
                   </div>
                 </div>

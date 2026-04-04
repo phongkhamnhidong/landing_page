@@ -46,7 +46,7 @@ export default async function HoiDapPage({ searchParams }: Props) {
                     href={`/hoi-dap/${faq._id}`}
                     className="group flex items-center gap-4 bg-white rounded-xl border border-border px-6 py-4 hover:border-gold/40 hover:shadow-sm transition-all"
                   >
-                    <span className="font-serif text-xl text-gold leading-none shrink-0">Q</span>
+                    <span className="font-serif text-xl text-gold leading-none shrink-0">CH</span>
                     <div className="flex-1 min-w-0">
                       {faq.categoryTitle && (
                         <span className="text-[10px] font-semibold uppercase tracking-wide text-gold bg-gold/10 px-2 py-0.5 rounded-full mb-1.5 inline-block">
