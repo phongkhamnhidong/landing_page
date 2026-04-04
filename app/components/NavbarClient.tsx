@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
+import ClinicLogo from "./ClinicLogo"
 
 type Category = { title: string; slug: string }
 
@@ -53,8 +54,9 @@ export default function NavbarClient({ clinicName, phone, categories, tinTucCate
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/" className="font-serif text-navy font-semibold text-lg leading-tight shrink-0">
-            {clinicName}
+          <Link href="/" className="flex items-center gap-2.5 shrink-0">
+            <ClinicLogo size={38} />
+            <span className="font-serif text-navy font-semibold text-lg leading-tight">{clinicName}</span>
           </Link>
 
           {/* Desktop nav */}
