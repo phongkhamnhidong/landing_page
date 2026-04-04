@@ -19,7 +19,6 @@ export default function NavbarClient({ clinicName, phone, categories }: Props) {
     { label: "Trang Chủ", href: "/" },
     { label: "Giới Thiệu", href: "/gioi-thieu" },
     { label: "Tin Tức", href: "/tin-tuc" },
-    { label: "Liên Kết Web", href: "/lien-ket-web" },
     { label: "Hỏi Đáp", href: "/hoi-dap" },
     { label: "Liên Hệ", href: "/lien-he" },
   ]
