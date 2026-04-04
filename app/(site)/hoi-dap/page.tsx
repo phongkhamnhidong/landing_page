@@ -1,6 +1,7 @@
 import { client } from "@/sanity/lib/client"
 import { allFaqQuery } from "@/app/lib/queries"
 import SectionHeader from "@/app/components/SectionHeader"
+import QuestionForm from "@/app/components/QuestionForm"
 
 export const revalidate = 60
 
@@ -8,8 +9,9 @@ export default async function HoiDapPage() {
   const faqs = await client.fetch(allFaqQuery)
 
   return (
-    <div className="pt-16">
-      <section className="py-20 bg-beige">
+    <div className="pt-16 bg-beige">
+      {/* FAQ list */}
+      <section className="py-20">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader label="Giải đáp thắc mắc" title="Hỏi Đáp" />
 
@@ -40,6 +42,16 @@ export default async function HoiDapPage() {
               Chưa có câu hỏi nào. Vui lòng thêm trong Sanity Studio.
             </p>
           )}
+        </div>
+      </section>
+
+      {/* Submit question form */}
+      <section className="py-20 bg-cream">
+        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SectionHeader label="Đặt câu hỏi" title="Bạn Có Thắc Mắc?" />
+          <div className="mt-10">
+            <QuestionForm />
+          </div>
         </div>
       </section>
     </div>

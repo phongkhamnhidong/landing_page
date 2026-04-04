@@ -8,6 +8,12 @@ export const faqType = defineType({
   icon: HelpCircleIcon,
   fields: [
     defineField({
+      name: 'submitterName',
+      title: 'Người gửi',
+      type: 'string',
+      description: 'Tên người gửi câu hỏi (từ website)',
+    }),
+    defineField({
       name: 'question',
       title: 'Câu hỏi',
       type: 'string',
