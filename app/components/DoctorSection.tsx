@@ -48,6 +48,10 @@ export default function DoctorSection({ doctor }: Props) {
 
           {/* Info — 3/5 width */}
           <div className="lg:col-span-3 p-8 lg:p-10 bg-white text-center lg:text-left">
+            <h3 className="font-serif text-3xl font-semibold text-navy mb-3">
+              {doctor.name ?? "Bác sĩ Minh Nguyệt"}
+            </h3>
+
             {/* Titles as badges */}
             {(doctor.titles && doctor.titles.length > 0) ? (
               <div className="flex flex-wrap justify-center lg:justify-start gap-2 mb-3">
@@ -65,9 +69,6 @@ export default function DoctorSection({ doctor }: Props) {
                 {doctor.title}
               </p>
             ) : null}
-            <h3 className="font-serif text-3xl font-semibold text-navy mb-1">
-              {doctor.name ?? "Bác sĩ Minh Nguyệt"}
-            </h3>
             {doctor.qualifications && (
               <p className="text-brown-muted text-sm mb-4">{doctor.qualifications}</p>
             )}
