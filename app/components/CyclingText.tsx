@@ -40,8 +40,9 @@ export default function CyclingText({ items }: { items: string[] }) {
   if (!items.length) return null
 
   return (
-    <p className="text-brown-muted text-sm sm:text-base leading-relaxed mb-5 min-h-[1.5em]">
-      {displayed}
+    <p className="text-sm sm:text-base mb-5 min-h-[1.5em]">
+      <span className="text-gold font-semibold tracking-wide">Chuyên khám: </span>
+      <span className="text-navy font-medium">{displayed}</span>
       <span className="inline-block w-0.5 h-4 bg-gold ml-0.5 align-middle animate-pulse" />
     </p>
   )
