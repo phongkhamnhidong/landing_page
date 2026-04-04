@@ -14,6 +14,12 @@ export const clinicInfoType = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'motto',
+      title: 'Khẩu hiệu (Motto)',
+      type: 'string',
+      description: 'Ví dụ: CHẤT LƯỢNG - HIỆU QUẢ - TẬN TÂM',
+    }),
+    defineField({
       name: 'tagline',
       title: 'Tagline',
       type: 'string',

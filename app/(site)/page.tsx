@@ -29,15 +29,16 @@ export default async function HomePage() {
     <>
       <HeroSection
         clinicName={clinicInfo?.clinicName}
+        motto={clinicInfo?.motto}
         tagline={clinicInfo?.tagline}
         phone={clinicInfo?.phone}
       />
+      <DoctorSection doctor={doctor} />
       <WorkingHoursSection
         openingHours={clinicInfo?.openingHours}
         address={clinicInfo?.address}
         phone={clinicInfo?.phone}
       />
-      <DoctorSection doctor={doctor} />
       <LatestKienThucSection posts={kienThucPosts} />
       <LatestNewsSection posts={tinTucPosts} />
       <LatestFAQSection faqs={faqs} />

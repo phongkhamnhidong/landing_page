@@ -1,6 +1,7 @@
 // Clinic info (nav, hero, contact)
 export const clinicInfoQuery = `*[_type == "clinicInfo"][0]{
   clinicName,
+  motto,
   tagline,
   phone,
   email,
@@ -21,6 +22,7 @@ export const doctorQuery = `*[_type == "doctor"][0]{
   title,
   qualifications,
   shortBio,
+  treatmentAreas,
   achievements,
   photo
 }`

@@ -1,15 +1,15 @@
 import type {StructureResolver} from 'sanity/structure'
 
-// https://www.sanity.io/docs/structure-builder-cheat-sheet
 export const structure: StructureResolver = (S) =>
   S.list()
-    .title('Blog')
+    .title('Phòng Khám Nhi Đồng')
     .items([
-      S.documentTypeListItem('post').title('Posts'),
-      S.documentTypeListItem('category').title('Categories'),
-      S.documentTypeListItem('author').title('Authors'),
+      S.documentTypeListItem('clinicInfo').title('Thông Tin Phòng Khám'),
+      S.documentTypeListItem('doctor').title('Bác Sĩ'),
       S.divider(),
-      ...S.documentTypeListItems().filter(
-        (item) => item.getId() && !['post', 'category', 'author'].includes(item.getId()!),
-      ),
+      S.documentTypeListItem('post').title('Bài Viết'),
+      S.documentTypeListItem('category').title('Danh Mục'),
+      S.divider(),
+      S.documentTypeListItem('faq').title('Hỏi Đáp'),
+      S.documentTypeListItem('webLink').title('Liên Kết Web'),
     ])

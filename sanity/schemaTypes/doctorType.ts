@@ -38,11 +38,18 @@ export const doctorType = defineType({
       description: '2–3 câu giới thiệu hiển thị trên trang chủ',
     }),
     defineField({
-      name: 'achievements',
-      title: 'Thành tích & Kinh nghiệm',
+      name: 'treatmentAreas',
+      title: 'Các lĩnh vực điều trị',
       type: 'array',
       of: [defineArrayMember({type: 'string'})],
-      description: 'Danh sách thành tích, chứng chỉ, kinh nghiệm',
+      description: 'Danh sách các lĩnh vực điều trị',
+    }),
+    defineField({
+      name: 'achievements',
+      title: 'Thành tích & Khen thưởng',
+      type: 'array',
+      of: [defineArrayMember({type: 'string'})],
+      description: 'Danh sách thành tích, bằng khen, danh hiệu',
     }),
     defineField({
       name: 'photo',
