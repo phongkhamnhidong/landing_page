@@ -31,6 +31,7 @@ export const tinTucCategoriesQuery = `*[_type == "category" && section == "tinTu
 export const doctorQuery = `*[_type == "doctor"][0]{
   name,
   title,
+  titles,
   qualifications,
   shortBio,
   treatmentAreas,
