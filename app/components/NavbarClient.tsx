@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import ClinicLogo from "./ClinicLogo"
+import Image from "next/image"
 
 type Category = { title: string; slug: string }
 
@@ -55,7 +55,7 @@ export default function NavbarClient({ clinicName, phone, categories, tinTucCate
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2.5 shrink-0">
-            <ClinicLogo size={38} />
+            <Image src="/me_bong_con.png" alt="Logo" width={38} height={38} className="object-contain" />
             <span className="font-serif text-navy font-semibold text-lg leading-tight hidden sm:block">{clinicName}</span>
             <span className="font-serif text-navy font-semibold text-base leading-tight sm:hidden">PKND Minh Nguyệt</span>
           </Link>
