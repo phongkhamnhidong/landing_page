@@ -63,7 +63,7 @@ export const latestFaqQuery = `*[_type == "faq"] | order(publishedAt desc)[0...3
   answer
 }`
 
-// Kiến Thức post search
+// Kiến Thức post search (all results, no pagination — for search result count)
 export const kienThucSearchQuery = `*[_type == "post" && section == "kienThuc" && title match $q] | order(publishedAt desc){
   title,
   "slug": slug.current,
@@ -73,7 +73,18 @@ export const kienThucSearchQuery = `*[_type == "post" && section == "kienThuc" &
   "categorySlug": categories[0]->slug.current
 }`
 
-// Tin Tức post search
+// Kiến Thức post search — paginated
+export const kienThucSearchPageQuery = `*[_type == "post" && section == "kienThuc" && title match $q] | order(publishedAt desc)[$from...$to]{
+  title,
+  "slug": slug.current,
+  mainImage,
+  publishedAt,
+  "categoryTitle": categories[0]->title,
+  "categorySlug": categories[0]->slug.current
+}`
+export const kienThucSearchCountQuery = `count(*[_type == "post" && section == "kienThuc" && title match $q])`
+
+// Tin Tức post search (all results)
 export const tinTucSearchQuery = `*[_type == "post" && section == "tinTuc" && title match $q] | order(publishedAt desc){
   title,
   "slug": slug.current,
@@ -81,7 +92,27 @@ export const tinTucSearchQuery = `*[_type == "post" && section == "tinTuc" && ti
   publishedAt
 }`
 
-// All kienThuc posts (listing page)
+// Tin Tức post search — paginated
+export const tinTucSearchPageQuery = `*[_type == "post" && section == "tinTuc" && title match $q] | order(publishedAt desc)[$from...$to]{
+  title,
+  "slug": slug.current,
+  mainImage,
+  publishedAt
+}`
+export const tinTucSearchCountQuery = `count(*[_type == "post" && section == "tinTuc" && title match $q])`
+
+// All kienThuc posts — paginated
+export const allKienThucPageQuery = `*[_type == "post" && section == "kienThuc"] | order(publishedAt desc)[$from...$to]{
+  title,
+  "slug": slug.current,
+  mainImage,
+  publishedAt,
+  "categoryTitle": categories[0]->title,
+  "categorySlug": categories[0]->slug.current
+}`
+export const allKienThucCountQuery = `count(*[_type == "post" && section == "kienThuc"])`
+
+// All kienThuc posts (listing page — legacy, keep for homepage)
 export const allKienThucQuery = `*[_type == "post" && section == "kienThuc"] | order(publishedAt desc)[0...9]{
   title,
   "slug": slug.current,
@@ -131,7 +162,16 @@ export const categoryBySlugQuery = `*[_type == "category" && slug.current == $sl
   description
 }`
 
-// All tinTuc posts (listing page)
+// All tinTuc posts — paginated
+export const allTinTucPageQuery = `*[_type == "post" && section == "tinTuc"] | order(publishedAt desc)[$from...$to]{
+  title,
+  "slug": slug.current,
+  mainImage,
+  publishedAt
+}`
+export const allTinTucCountQuery = `count(*[_type == "post" && section == "tinTuc"])`
+
+// All tinTuc posts (listing page — legacy, keep for homepage)
 export const allTinTucQuery = `*[_type == "post" && section == "tinTuc"] | order(publishedAt desc)[0...9]{
   title,
   "slug": slug.current,

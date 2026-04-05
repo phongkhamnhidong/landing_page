@@ -7,27 +7,52 @@ export const metadata: Metadata = {
     "Kiến thức y khoa về sức khỏe trẻ em — dinh dưỡng, hô hấp, tiêu hóa, thần kinh và nhiều chủ đề khác từ bác sĩ Minh Nguyệt.",
 }
 import { client } from "@/sanity/lib/client"
-import { categoriesQuery, allKienThucQuery, kienThucSearchQuery } from "@/app/lib/queries"
+import {
+  categoriesQuery,
+  allKienThucPageQuery,
+  allKienThucCountQuery,
+  kienThucSearchPageQuery,
+  kienThucSearchCountQuery,
+} from "@/app/lib/queries"
 import PostCard from "@/app/components/PostCard"
 import SectionHeader from "@/app/components/SectionHeader"
 import SearchInput from "@/app/components/SearchInput"
+import Pagination from "@/app/components/Pagination"
 
 export const revalidate = 60
 
-type Props = { searchParams: Promise<{ q?: string }> }
+const PAGE_SIZE = 9
+
+type Props = { searchParams: Promise<{ q?: string; page?: string }> }
 
 export default async function KienThucPage({ searchParams }: Props) {
-  const { q } = await searchParams
+  const { q, page: pageParam } = await searchParams
   const query = q?.trim() ?? ""
   const isSearching = query.length > 0
   const searchTerm = query + "*"
+  const page = Math.max(1, parseInt(pageParam ?? "1", 10))
+  const from = (page - 1) * PAGE_SIZE
+  const to = from + PAGE_SIZE
 
-  const [categories, posts] = await Promise.all([
+  const [categories, posts, total] = await Promise.all([
     client.fetch(categoriesQuery),
     isSearching
-      ? client.fetch(kienThucSearchQuery, { q: searchTerm })
-      : client.fetch(allKienThucQuery),
+      ? client.fetch(kienThucSearchPageQuery, { q: searchTerm, from, to })
+      : client.fetch(allKienThucPageQuery, { from, to }),
+    isSearching
+      ? client.fetch(kienThucSearchCountQuery, { q: searchTerm })
+      : client.fetch(allKienThucCountQuery),
   ])
+
+  const totalPages = Math.ceil(total / PAGE_SIZE)
+
+  function pageHref(p: number) {
+    const params = new URLSearchParams()
+    if (query) params.set("q", query)
+    if (p > 1) params.set("page", String(p))
+    const qs = params.toString()
+    return `/kien-thuc${qs ? `?${qs}` : ""}`
+  }
 
   return (
     <div className="pt-16">
@@ -70,16 +95,20 @@ export default async function KienThucPage({ searchParams }: Props) {
 
           {isSearching && (
             <p className="text-xs text-brown-muted/60 text-center mt-4">
-              {posts.length} kết quả cho &ldquo;<span className="text-navy font-medium">{query}</span>&rdquo;
+              {total} kết quả cho &ldquo;<span className="text-navy font-medium">{query}</span>&rdquo;
             </p>
           )}
 
           {posts && posts.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
-              {posts.map((post: Parameters<typeof PostCard>[0]["post"]) => (
-                <PostCard key={post.slug} post={post} />
-              ))}
-            </div>
+            <>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+                {posts.map((post: Parameters<typeof PostCard>[0]["post"]) => (
+                  <PostCard key={post.slug} post={post} />
+                ))}
+              </div>
+
+              <Pagination page={page} totalPages={totalPages} pageHref={pageHref} />
+            </>
           ) : (
             <p className="text-center text-brown-muted mt-10">
               {isSearching ? `Không tìm thấy bài viết nào cho "${query}".` : "Chưa có bài viết nào."}
