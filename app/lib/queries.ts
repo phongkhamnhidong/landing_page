@@ -57,11 +57,11 @@ export const latestTinTucQuery = `*[_type == "post" && section == "tinTuc"] | or
   "categoryTitle": categories[0]->title
 }`
 
-// Latest 3 FAQs for homepage
+// Latest 3 FAQs for homepage — extract plain text from first answer block
 export const latestFaqQuery = `*[_type == "faq"] | order(publishedAt desc)[0...3]{
   _id,
   question,
-  answer
+  "answer": pt::text(answer)
 }`
 
 // Kiến Thức post search (all results, no pagination — for search result count)
