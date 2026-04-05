@@ -85,10 +85,11 @@ export const postType = defineType({
           type: 'reference',
           to: {type: 'category'},
           options: {
-            filter: ({document}: {document: {section?: string}}) =>
-              document?.section
-                ? {filter: 'section == $section', params: {section: document.section}}
-                : {},
+            filter: ({document}: {document: Record<string, unknown>}) => {
+              const section = document?.section as string | undefined
+              if (!section) return {}
+              return {filter: 'section == $section', params: {section}}
+            },
           },
         }),
       ],
