@@ -4,9 +4,10 @@ import Link from "next/link"
 import Image from "next/image"
 import { PortableText } from "@portabletext/react"
 import { client } from "@/sanity/lib/client"
-import { faqByIdQuery, relatedFaqsQuery } from "@/app/lib/queries"
+import { faqByIdQuery, relatedFaqsQuery, clinicInfoQuery } from "@/app/lib/queries"
 import { getView } from "@/app/actions/incrementView"
 import ViewCounter from "@/app/components/ViewCounter"
+import ContactBanner from "@/app/components/ContactBanner"
 
 const portableTextComponents = {
   types: {
@@ -60,9 +61,10 @@ function formatDate(dateStr?: string) {
 
 export default async function FaqDetailPage({ params }: Props) {
   const { id } = await params
-  const [faq, initialCount] = await Promise.all([
+  const [faq, initialCount, clinicInfo] = await Promise.all([
     client.fetch(faqByIdQuery, { id }),
     getView(`views:faq:${id}`),
+    client.fetch(clinicInfoQuery),
   ])
   if (!faq) notFound()
 
@@ -139,6 +141,7 @@ export default async function FaqDetailPage({ params }: Props) {
           </div>
         )}
 
+        <ContactBanner phone={clinicInfo?.phone} address={clinicInfo?.address} />
       </article>
     </div>
   )

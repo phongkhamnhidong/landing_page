@@ -9,7 +9,11 @@ export default function ContactBanner({ phone, address }: Props) {
   return (
     <div className="my-12 rounded-2xl bg-navy px-6 py-7 text-center">
       <p className="text-cream text-sm leading-relaxed">
-        Liên hệ <span className="font-semibold text-gold">Bác sĩ Minh Nguyệt</span> để được tư vấn và điều trị sớm nhất qua{" "}
+        Liên hệ{" "}
+        <Link href="/gioi-thieu#doi-ngu" className="font-semibold text-gold hover:underline">
+          Bác sĩ Minh Nguyệt
+        </Link>{" "}
+        để được tư vấn và điều trị sớm nhất qua{" "}
         {phone ? (
           <a href={`tel:${phone.replace(/\s/g, "")}`} className="font-semibold text-gold hover:underline">
             {phone}
