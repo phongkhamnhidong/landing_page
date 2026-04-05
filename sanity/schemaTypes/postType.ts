@@ -80,7 +80,18 @@ export const postType = defineType({
       name: 'categories',
       title: 'Danh mục',
       type: 'array',
-      of: [defineArrayMember({type: 'reference', to: {type: 'category'}})],
+      of: [
+        defineArrayMember({
+          type: 'reference',
+          to: {type: 'category'},
+          options: {
+            filter: ({document}: {document: {section?: string}}) =>
+              document?.section
+                ? {filter: 'section == $section', params: {section: document.section}}
+                : {},
+          },
+        }),
+      ],
       validation: (Rule) => Rule.required().min(1).error('Vui lòng chọn ít nhất một danh mục.'),
     }),
     defineField({
