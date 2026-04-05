@@ -56,7 +56,8 @@ export default function NavbarClient({ clinicName, phone, categories, tinTucCate
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2.5 shrink-0">
             <ClinicLogo size={38} />
-            <span className="font-serif text-navy font-semibold text-lg leading-tight">{clinicName}</span>
+            <span className="font-serif text-navy font-semibold text-lg leading-tight hidden sm:block">{clinicName}</span>
+            <span className="font-serif text-navy font-semibold text-base leading-tight sm:hidden">PKND Minh Nguyệt</span>
           </Link>
 
           {/* Desktop nav */}
