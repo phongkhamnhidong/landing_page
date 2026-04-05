@@ -29,16 +29,19 @@ export const postType = defineType({
     }),
     defineField({
       name: 'slug',
+      title: 'Slug',
       type: 'slug',
       options: {
         source: 'title',
       },
+      validation: (Rule) => Rule.required().error('Slug là bắt buộc. Nhấn "Generate" để tạo tự động.'),
     }),
     defineField({
       name: 'author',
       title: 'Tác giả',
       type: 'reference',
       to: {type: 'doctor'},
+      validation: (Rule) => Rule.required().error('Vui lòng chọn tác giả.'),
     }),
     defineField({
       name: 'mainImage',
@@ -58,16 +61,19 @@ export const postType = defineType({
       title: 'Danh mục',
       type: 'array',
       of: [defineArrayMember({type: 'reference', to: {type: 'category'}})],
+      validation: (Rule) => Rule.required().min(1).error('Vui lòng chọn ít nhất một danh mục.'),
     }),
     defineField({
       name: 'publishedAt',
       title: 'Ngày đăng',
       type: 'datetime',
+      validation: (Rule) => Rule.required().error('Vui lòng chọn ngày đăng.'),
     }),
     defineField({
       name: 'body',
       title: 'Nội dung',
       type: 'blockContent',
+      validation: (Rule) => Rule.required().error('Nội dung bài viết là bắt buộc.'),
     }),
     defineField({
       name: 'references',
