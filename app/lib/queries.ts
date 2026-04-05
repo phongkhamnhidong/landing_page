@@ -57,11 +57,11 @@ export const latestTinTucQuery = `*[_type == "post" && section == "tinTuc"] | or
   "categoryTitle": categories[0]->title
 }`
 
-// Latest 3 FAQs for homepage
-export const latestFaqQuery = `*[_type == "faq"] | order(publishedAt desc)[0...3]{
+// Latest 3 FAQs for homepage — extract plain text from first answer block
+export const latestFaqQuery = `*[_type == "faq" && (status == "answered" || !defined(status))] | order(publishedAt desc)[0...3]{
   _id,
   question,
-  answer
+  "answer": pt::text(answer)
 }`
 
 // Kiến Thức post search (all results, no pagination — for search result count)
@@ -186,31 +186,32 @@ export const allTinTucQuery = `*[_type == "post" && section == "tinTuc"] | order
   "categoryTitle": categories[0]->title
 }`
 
-// FAQ count (for pagination, no search)
-export const faqCountQuery = `count(*[_type == "faq"])`
+// FAQ count (for pagination, no search) — only answered
+export const faqCountQuery = `count(*[_type == "faq" && (status == "answered" || !defined(status))])`
 
-// FAQ count with search
-export const faqSearchCountQuery = `count(*[_type == "faq" && question match $q])`
+// FAQ count with search — only answered
+export const faqSearchCountQuery = `count(*[_type == "faq" && (status == "answered" || !defined(status)) && question match $q])`
 
-// Paginated FAQs (questions only, no answer)
-export const faqPageQuery = `*[_type == "faq"] | order(publishedAt desc)[$from...$to]{
+// Paginated FAQs (questions only, no answer) — only answered
+export const faqPageQuery = `*[_type == "faq" && (status == "answered" || !defined(status))] | order(publishedAt desc)[$from...$to]{
   _id,
   question,
   publishedAt,
   "categoryTitle": category->title
 }`
 
-// Paginated FAQs with search
-export const faqSearchPageQuery = `*[_type == "faq" && question match $q] | order(publishedAt desc)[$from...$to]{
+// Paginated FAQs with search — only answered
+export const faqSearchPageQuery = `*[_type == "faq" && (status == "answered" || !defined(status)) && question match $q] | order(publishedAt desc)[$from...$to]{
   _id,
   question,
   publishedAt,
   "categoryTitle": category->title
 }`
 
-// Related FAQs (same category, fallback any, exclude current)
+// Related FAQs (same category, fallback any, exclude current) — only answered
 export const relatedFaqsQuery = `*[
   _type == "faq" &&
+  (status == "answered" || !defined(status)) &&
   _id != $id &&
   ($categoryRef == null || category._ref == $categoryRef)
 ] | order(publishedAt desc)[0...4]{
@@ -237,8 +238,8 @@ export const faqByIdQuery = `*[_type == "faq" && _id == $id][0]{
   "categoryRef": category._ref
 }`
 
-// All FAQs (legacy, used by homepage widget)
-export const allFaqQuery = `*[_type == "faq"] | order(publishedAt desc){
+// All FAQs (legacy, used by homepage widget) — only answered
+export const allFaqQuery = `*[_type == "faq" && (status == "answered" || !defined(status))] | order(publishedAt desc){
   _id,
   question,
   answer,

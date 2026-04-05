@@ -57,9 +57,9 @@ export async function submitQuestion(formData: FormData): Promise<SubmitResult> 
   try {
     await writeClient.create({
       _type: "faq",
+      status: "new",
       submitterName: name || "Ẩn danh",
       question,
-      // answer left empty — doctor fills it in Studio before publishing
     })
     return { success: true }
   } catch {

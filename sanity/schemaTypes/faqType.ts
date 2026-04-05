@@ -8,6 +8,20 @@ export const faqType = defineType({
   icon: HelpCircleIcon,
   fields: [
     defineField({
+      name: 'status',
+      title: 'Trạng thái',
+      type: 'string',
+      options: {
+        list: [
+          {title: 'Câu hỏi mới', value: 'new'},
+          {title: 'Đã trả lời', value: 'answered'},
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'new',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: 'submitterName',
       title: 'Người gửi',
       type: 'string',
@@ -23,7 +37,6 @@ export const faqType = defineType({
       name: 'answer',
       title: 'Câu trả lời',
       type: 'blockContent',
-      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'category',
@@ -40,6 +53,13 @@ export const faqType = defineType({
   preview: {
     select: {
       title: 'question',
+      status: 'status',
+    },
+    prepare({title, status}) {
+      return {
+        title,
+        subtitle: status === 'new' ? '🆕 Chưa trả lời' : '✅ Đã trả lời',
+      }
     },
   },
 })
