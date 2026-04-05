@@ -30,7 +30,7 @@ export default function WorkingHoursSection({ schedule, address, phone, zalo, fa
     : null
 
   return (
-    <section className="py-20 bg-beige">
+    <section id="gio-lam-viec" className="py-20 bg-beige">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeader label="Thông tin" title="Giờ Làm Việc & Địa Chỉ" />
 

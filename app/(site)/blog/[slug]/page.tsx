@@ -5,7 +5,8 @@ import Link from "next/link"
 import { PortableText } from "@portabletext/react"
 import { client } from "@/sanity/lib/client"
 import { urlFor } from "@/sanity/lib/image"
-import { postBySlugQuery, allPostSlugsQuery, relatedPostsQuery } from "@/app/lib/queries"
+import { postBySlugQuery, allPostSlugsQuery, relatedPostsQuery, clinicInfoQuery } from "@/app/lib/queries"
+import ContactBanner from "@/app/components/ContactBanner"
 import { getView } from "@/app/actions/incrementView"
 import { estimateReadingTime } from "@/app/lib/readingTime"
 import ViewCounter from "@/app/components/ViewCounter"
@@ -81,9 +82,10 @@ const portableTextComponents = {
 
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params
-  const [post, initialCount] = await Promise.all([
+  const [post, initialCount, clinicInfo] = await Promise.all([
     client.fetch(postBySlugQuery, { slug }),
     getView(`views:post:${slug}`),
+    client.fetch(clinicInfoQuery),
   ])
   if (!post) notFound()
 
@@ -164,6 +166,8 @@ export default async function BlogPostPage({ params }: Props) {
             <PortableText value={post.body} components={portableTextComponents} />
           </div>
         )}
+
+        <ContactBanner phone={clinicInfo?.phone} address={clinicInfo?.address} />
 
         {/* References */}
         {post.references && post.references.length > 0 && (
