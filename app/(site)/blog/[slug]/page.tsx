@@ -53,7 +53,7 @@ const portableTextComponents = {
       if (!value?.url) return null
       const { width = 800, height = 600 } = value.dimensions ?? {}
       return (
-        <figure className="my-8">
+        <figure className="my-8 flex flex-col items-center">
           <Image
             src={value.url}
             alt={value.alt ?? ""}
