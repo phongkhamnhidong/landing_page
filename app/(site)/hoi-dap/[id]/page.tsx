@@ -1,10 +1,44 @@
 import { notFound } from "next/navigation"
 import type { Metadata } from "next"
 import Link from "next/link"
+import Image from "next/image"
+import { PortableText } from "@portabletext/react"
 import { client } from "@/sanity/lib/client"
 import { faqByIdQuery, relatedFaqsQuery } from "@/app/lib/queries"
 import { getView } from "@/app/actions/incrementView"
 import ViewCounter from "@/app/components/ViewCounter"
+
+const portableTextComponents = {
+  types: {
+    image: ({ value }: { value: { url?: string; alt?: string; dimensions?: { width: number; height: number } } }) => {
+      if (!value?.url) return null
+      const { width = 800, height = 600 } = value.dimensions ?? {}
+      return (
+        <figure className="my-6 flex flex-col items-center">
+          <Image
+            src={value.url}
+            alt={value.alt ?? ""}
+            width={width}
+            height={height}
+            className="rounded-xl border border-border"
+            style={{ maxWidth: "100%", height: "auto" }}
+          />
+          {value.alt && (
+            <figcaption className="text-center text-xs text-brown-muted/60 mt-2 italic">{value.alt}</figcaption>
+          )}
+        </figure>
+      )
+    },
+  },
+  marks: {
+    underline: ({ children }: { children?: React.ReactNode }) => <span className="underline">{children}</span>,
+    link: ({ value, children }: { value?: { href?: string }; children?: React.ReactNode }) => (
+      <a href={value?.href} target="_blank" rel="noopener noreferrer" className="text-gold hover:underline">
+        {children}
+      </a>
+    ),
+  },
+}
 
 export const revalidate = 60
 
@@ -16,7 +50,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!faq) return {}
   return {
     title: faq.question,
-    description: faq.answer?.slice(0, 160),
   }
 }
 
@@ -65,7 +98,9 @@ export default async function FaqDetailPage({ params }: Props) {
           {/* Answer */}
           <div className="flex items-start gap-4">
             <span className="font-serif text-3xl text-brown-muted/40 leading-none shrink-0 mt-1">TL</span>
-            <p className="text-brown-muted leading-relaxed whitespace-pre-line">{faq.answer}</p>
+            <div className="prose prose-sm prose-headings:font-serif prose-headings:text-navy prose-a:text-gold max-w-none text-brown-muted">
+              <PortableText value={faq.answer} components={portableTextComponents} />
+            </div>
           </div>
 
           {/* Meta */}

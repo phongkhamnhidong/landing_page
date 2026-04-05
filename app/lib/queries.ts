@@ -176,7 +176,14 @@ export const relatedFaqsQuery = `*[
 export const faqByIdQuery = `*[_type == "faq" && _id == $id][0]{
   _id,
   question,
-  answer,
+  answer[]{
+    ...,
+    _type == "image" => {
+      ...,
+      "url": asset->url,
+      "dimensions": asset->metadata.dimensions
+    }
+  },
   publishedAt,
   submitterName,
   "categoryTitle": category->title,
