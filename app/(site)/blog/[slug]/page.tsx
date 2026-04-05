@@ -5,7 +5,8 @@ import Link from "next/link"
 import { PortableText } from "@portabletext/react"
 import { client } from "@/sanity/lib/client"
 import { urlFor } from "@/sanity/lib/image"
-import { postBySlugQuery, allPostSlugsQuery, relatedPostsQuery } from "@/app/lib/queries"
+import { postBySlugQuery, allPostSlugsQuery, relatedPostsQuery, clinicInfoQuery } from "@/app/lib/queries"
+import ContactBanner from "@/app/components/ContactBanner"
 import { getView } from "@/app/actions/incrementView"
 import { estimateReadingTime } from "@/app/lib/readingTime"
 import ViewCounter from "@/app/components/ViewCounter"
@@ -53,7 +54,7 @@ const portableTextComponents = {
       if (!value?.url) return null
       const { width = 800, height = 600 } = value.dimensions ?? {}
       return (
-        <figure className="my-8">
+        <figure className="my-8 flex flex-col items-center">
           <Image
             src={value.url}
             alt={value.alt ?? ""}
@@ -81,9 +82,10 @@ const portableTextComponents = {
 
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params
-  const [post, initialCount] = await Promise.all([
+  const [post, initialCount, clinicInfo] = await Promise.all([
     client.fetch(postBySlugQuery, { slug }),
     getView(`views:post:${slug}`),
+    client.fetch(clinicInfoQuery),
   ])
   if (!post) notFound()
 
@@ -139,9 +141,11 @@ export default async function BlogPostPage({ params }: Props) {
             <div className="h-1.5 w-1.5 rounded-full bg-gold" />
             <div className="h-px w-10 bg-gold" />
           </div>
-          {post.authorName && (
+          {post.isExternalSource && post.sourceName ? (
+            <p className="text-sm text-brown-muted">Nguồn: <span className="font-medium text-brown">{post.sourceName}</span></p>
+          ) : post.authorName ? (
             <p className="text-sm text-brown-muted">Bởi <span className="font-medium text-brown">{post.authorName}</span></p>
-          )}
+          ) : null}
         </header>
 
         {imageUrl && (
@@ -183,6 +187,8 @@ export default async function BlogPostPage({ params }: Props) {
             </ol>
           </div>
         )}
+
+        <ContactBanner phone={clinicInfo?.phone} address={clinicInfo?.address} />
       </article>
 
       {/* Related posts */}

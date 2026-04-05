@@ -94,7 +94,9 @@ export default async function GioiThieuPage() {
       </section>
 
       {/* About the Doctor */}
-      <DoctorSection doctor={doctor} />
+      <div id="doi-ngu">
+        <DoctorSection doctor={doctor} />
+      </div>
 
       {/* Clinic gallery */}
       {clinicInfo?.galleryImages?.length > 0 && (

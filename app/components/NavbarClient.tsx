@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import ClinicLogo from "./ClinicLogo"
+import Image from "next/image"
 
 type Category = { title: string; slug: string }
 
@@ -55,8 +55,9 @@ export default function NavbarClient({ clinicName, phone, categories, tinTucCate
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2.5 shrink-0">
-            <ClinicLogo size={38} />
-            <span className="font-serif text-navy font-semibold text-lg leading-tight">{clinicName}</span>
+            <Image src="/me_bong_con.png" alt="Logo" width={38} height={38} className="object-contain" />
+            <span className="font-serif text-navy font-semibold text-lg leading-tight hidden sm:block">{clinicName}</span>
+            <span className="font-serif text-navy font-semibold text-base leading-tight sm:hidden">PKND Minh Nguyệt</span>
           </Link>
 
           {/* Desktop nav */}
@@ -85,13 +86,16 @@ export default function NavbarClient({ clinicName, phone, categories, tinTucCate
           </div>
 
           {/* CTA + hamburger */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             {phone && (
               <a
                 href={`tel:${phone.replace(/\s/g, "")}`}
-                className="hidden sm:flex items-center gap-1.5 bg-navy text-cream text-sm font-medium px-4 py-2 rounded-full hover:bg-navy-light transition-colors"
+                className="flex items-center gap-1.5 bg-navy text-cream text-sm font-medium px-4 py-2 rounded-full hover:bg-navy/90 transition-colors"
               >
-                <span>📞</span> {phone}
+                <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 011 1V20a1 1 0 01-1 1C10.61 21 3 13.39 3 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.46.57 3.58a1 1 0 01-.24 1.01l-2.21 2.2z"/>
+                </svg>
+                <span className="hidden sm:inline">{phone}</span>
               </a>
             )}
             <button
@@ -161,8 +165,11 @@ export default function NavbarClient({ clinicName, phone, categories, tinTucCate
             <Link href="/lien-he" onClick={() => setMobileOpen(false)} className="block px-4 py-2 text-sm text-brown-muted hover:text-navy hover:bg-beige rounded-lg transition-colors">Liên Hệ</Link>
 
             {phone && (
-              <a href={`tel:${phone.replace(/\s/g, "")}`} className="block mx-4 mt-3 text-center bg-navy text-cream text-sm font-medium py-2.5 rounded-full">
-                📞 {phone}
+              <a href={`tel:${phone.replace(/\s/g, "")}`} className="flex items-center justify-center gap-2 mx-4 mt-3 bg-navy text-cream text-sm font-medium py-2.5 rounded-full">
+                <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 011 1V20a1 1 0 01-1 1C10.61 21 3 13.39 3 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.46.57 3.58a1 1 0 01-.24 1.01l-2.21 2.2z"/>
+                </svg>
+                {phone}
               </a>
             )}
           </div>

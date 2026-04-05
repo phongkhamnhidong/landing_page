@@ -22,8 +22,7 @@ export const faqType = defineType({
     defineField({
       name: 'answer',
       title: 'Câu trả lời',
-      type: 'text',
-      rows: 6,
+      type: 'blockContent',
       validation: (Rule) => Rule.required(),
     }),
     defineField({
