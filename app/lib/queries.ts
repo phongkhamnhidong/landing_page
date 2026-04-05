@@ -53,7 +53,8 @@ export const latestTinTucQuery = `*[_type == "post" && section == "tinTuc"] | or
   title,
   "slug": slug.current,
   mainImage,
-  publishedAt
+  publishedAt,
+  "categoryTitle": categories[0]->title
 }`
 
 // Latest 3 FAQs for homepage
@@ -89,7 +90,8 @@ export const tinTucSearchQuery = `*[_type == "post" && section == "tinTuc" && ti
   title,
   "slug": slug.current,
   mainImage,
-  publishedAt
+  publishedAt,
+  "categoryTitle": categories[0]->title
 }`
 
 // Tin Tức post search — paginated
@@ -97,7 +99,8 @@ export const tinTucSearchPageQuery = `*[_type == "post" && section == "tinTuc" &
   title,
   "slug": slug.current,
   mainImage,
-  publishedAt
+  publishedAt,
+  "categoryTitle": categories[0]->title
 }`
 export const tinTucSearchCountQuery = `count(*[_type == "post" && section == "tinTuc" && title match $q])`
 
@@ -146,14 +149,16 @@ export const tinTucPostsByCategoryQuery = `*[_type == "post" && section == "tinT
   title,
   "slug": slug.current,
   mainImage,
-  publishedAt
+  publishedAt,
+  "categoryTitle": categories[0]->title
 }`
 export const tinTucPostsByCategoryCountQuery = `count(*[_type == "post" && section == "tinTuc" && $categorySlug in categories[]->slug.current])`
 export const tinTucPostsByCategorySearchQuery = `*[_type == "post" && section == "tinTuc" && $categorySlug in categories[]->slug.current && title match $q] | order(publishedAt desc){
   title,
   "slug": slug.current,
   mainImage,
-  publishedAt
+  publishedAt,
+  "categoryTitle": categories[0]->title
 }`
 
 // Category by slug (for page title)
@@ -167,7 +172,8 @@ export const allTinTucPageQuery = `*[_type == "post" && section == "tinTuc"] | o
   title,
   "slug": slug.current,
   mainImage,
-  publishedAt
+  publishedAt,
+  "categoryTitle": categories[0]->title
 }`
 export const allTinTucCountQuery = `count(*[_type == "post" && section == "tinTuc"])`
 
@@ -176,7 +182,8 @@ export const allTinTucQuery = `*[_type == "post" && section == "tinTuc"] | order
   title,
   "slug": slug.current,
   mainImage,
-  publishedAt
+  publishedAt,
+  "categoryTitle": categories[0]->title
 }`
 
 // FAQ count (for pagination, no search)

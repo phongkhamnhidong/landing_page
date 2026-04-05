@@ -19,7 +19,11 @@ export default function LiveVisitorCount() {
     async function ping() {
       if (!sessionIdRef.current) return
       const n = await trackVisitor(sessionIdRef.current)
-      setCount(Math.max(n * 7, n))
+      // Seed random offset on a 2-minute window so it drifts gradually, not every ping
+      const seed = Math.floor(Date.now() / 120_000)
+      const seededRandom = ((seed * 9301 + 49297) % 233280) / 233280
+      const offset = Math.floor(seededRandom * 11) // 0–10
+      setCount(Math.max(n * 7 + offset, n))
     }
 
     ping()
