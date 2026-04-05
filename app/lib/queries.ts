@@ -225,6 +225,8 @@ export const postBySlugQuery = `*[_type == "post" && slug.current == $slug][0]{
   },
   references[]{title, url},
   "authorName": author->name,
+  isExternalSource,
+  sourceName,
   "categoryTitle": categories[0]->title,
   "categorySlug": categories[0]->slug.current
 }`

@@ -139,9 +139,11 @@ export default async function BlogPostPage({ params }: Props) {
             <div className="h-1.5 w-1.5 rounded-full bg-gold" />
             <div className="h-px w-10 bg-gold" />
           </div>
-          {post.authorName && (
+          {post.isExternalSource && post.sourceName ? (
+            <p className="text-sm text-brown-muted">Nguồn: <span className="font-medium text-brown">{post.sourceName}</span></p>
+          ) : post.authorName ? (
             <p className="text-sm text-brown-muted">Bởi <span className="font-medium text-brown">{post.authorName}</span></p>
-          )}
+          ) : null}
         </header>
 
         {imageUrl && (

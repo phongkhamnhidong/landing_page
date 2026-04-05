@@ -37,11 +37,31 @@ export const postType = defineType({
       validation: (Rule) => Rule.required().error('Slug là bắt buộc. Nhấn "Generate" để tạo tự động.'),
     }),
     defineField({
+      name: 'isExternalSource',
+      title: 'Nguồn tham khảo (không phải bác sĩ)',
+      type: 'boolean',
+      description: 'Tích vào nếu bài viết được lấy từ nguồn bên ngoài thay vì do bác sĩ viết',
+      initialValue: false,
+    }),
+    defineField({
       name: 'author',
       title: 'Tác giả',
       type: 'reference',
       to: {type: 'doctor'},
-      validation: (Rule) => Rule.required().error('Vui lòng chọn tác giả.'),
+      hidden: ({document}) => !!document?.isExternalSource,
+      validation: (Rule) =>
+        Rule.custom((value, context) => {
+          if (context.document?.isExternalSource) return true
+          if (!value) return 'Vui lòng chọn tác giả.'
+          return true
+        }),
+    }),
+    defineField({
+      name: 'sourceName',
+      title: 'Tên nguồn tham khảo',
+      type: 'string',
+      description: 'Ví dụ: Bộ Y Tế, WHO, Vinmec...',
+      hidden: ({document}) => !document?.isExternalSource,
     }),
     defineField({
       name: 'mainImage',
