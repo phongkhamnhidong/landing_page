@@ -167,8 +167,6 @@ export default async function BlogPostPage({ params }: Props) {
           </div>
         )}
 
-        <ContactBanner phone={clinicInfo?.phone} address={clinicInfo?.address} />
-
         {/* References */}
         {post.references && post.references.length > 0 && (
           <div className="mt-12 pt-8 border-t border-border">
@@ -189,6 +187,8 @@ export default async function BlogPostPage({ params }: Props) {
             </ol>
           </div>
         )}
+
+        <ContactBanner phone={clinicInfo?.phone} address={clinicInfo?.address} />
       </article>
 
       {/* Related posts */}
