@@ -1,6 +1,5 @@
 import { notFound } from "next/navigation"
 import type { Metadata } from "next"
-import Link from "next/link"
 import { client } from "@/sanity/lib/client"
 import {
   postsByCategoryQuery,
@@ -12,6 +11,7 @@ import {
 import PostCard from "@/app/components/PostCard"
 import SectionHeader from "@/app/components/SectionHeader"
 import SearchInput from "@/app/components/SearchInput"
+import Pagination from "@/app/components/Pagination"
 
 export const revalidate = 60
 
@@ -92,33 +92,7 @@ export default async function CategoryPage({ params, searchParams }: Props) {
                 ))}
               </div>
 
-              {totalPages > 1 && (
-                <div className="flex items-center justify-center gap-2 mt-12">
-                  {page > 1 && (
-                    <Link href={pageHref(page - 1)} className="px-4 py-2 text-sm font-medium text-brown-muted bg-white border border-border rounded-lg hover:border-gold/40 hover:text-navy transition-all">
-                      ← Trước
-                    </Link>
-                  )}
-                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
-                    <Link
-                      key={p}
-                      href={pageHref(p)}
-                      className={`w-9 h-9 flex items-center justify-center text-sm font-medium rounded-lg border transition-all ${
-                        p === page
-                          ? "bg-navy text-cream border-navy"
-                          : "bg-white text-brown-muted border-border hover:border-gold/40 hover:text-navy"
-                      }`}
-                    >
-                      {p}
-                    </Link>
-                  ))}
-                  {page < totalPages && (
-                    <Link href={pageHref(page + 1)} className="px-4 py-2 text-sm font-medium text-brown-muted bg-white border border-border rounded-lg hover:border-gold/40 hover:text-navy transition-all">
-                      Tiếp →
-                    </Link>
-                  )}
-                </div>
-              )}
+              <Pagination page={page} totalPages={totalPages} pageHref={pageHref} />
             </>
           ) : (
             <p className="text-center text-brown-muted mt-10">

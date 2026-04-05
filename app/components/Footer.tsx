@@ -1,5 +1,6 @@
 import Link from "next/link"
 import Image from "next/image"
+import LiveVisitorCount from "./LiveVisitorCount"
 
 type Props = {
   clinicName?: string
@@ -85,8 +86,9 @@ export default function Footer({ clinicName, motto, phone, zalo, facebook }: Pro
           </div>
         </div>
 
-        <div className="border-t border-cream/10 pt-6 text-center text-xs text-cream/40">
-          © {new Date().getFullYear()} {clinicName ?? "Phòng Khám Nhi Đồng"}. Bảo lưu mọi quyền.
+        <div className="border-t border-cream/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-cream/40">
+          <span>© {new Date().getFullYear()} {clinicName ?? "Phòng Khám Nhi Đồng"}. Bảo lưu mọi quyền.</span>
+          <LiveVisitorCount />
         </div>
       </div>
     </footer>

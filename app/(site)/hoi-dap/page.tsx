@@ -5,6 +5,7 @@ import { faqPageQuery, faqCountQuery, faqSearchPageQuery, faqSearchCountQuery } 
 import SectionHeader from "@/app/components/SectionHeader"
 import QuestionForm from "@/app/components/QuestionForm"
 import FaqSearchInput from "@/app/components/FaqSearchInput"
+import Pagination from "@/app/components/Pagination"
 
 export const metadata: Metadata = {
   title: "Hỏi Đáp",
@@ -89,34 +90,7 @@ export default async function HoiDapPage({ searchParams }: Props) {
                 ))}
               </div>
 
-              {/* Pagination */}
-              {totalPages > 1 && (
-                <div className="flex items-center justify-center gap-2 mt-10">
-                  {page > 1 && (
-                    <Link href={pageHref(page - 1)} className="px-4 py-2 text-sm font-medium text-brown-muted bg-white border border-border rounded-lg hover:border-gold/40 hover:text-navy transition-all">
-                      ← Trước
-                    </Link>
-                  )}
-                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
-                    <Link
-                      key={p}
-                      href={pageHref(p)}
-                      className={`w-9 h-9 flex items-center justify-center text-sm font-medium rounded-lg border transition-all ${
-                        p === page
-                          ? "bg-navy text-cream border-navy"
-                          : "bg-white text-brown-muted border-border hover:border-gold/40 hover:text-navy"
-                      }`}
-                    >
-                      {p}
-                    </Link>
-                  ))}
-                  {page < totalPages && (
-                    <Link href={pageHref(page + 1)} className="px-4 py-2 text-sm font-medium text-brown-muted bg-white border border-border rounded-lg hover:border-gold/40 hover:text-navy transition-all">
-                      Tiếp →
-                    </Link>
-                  )}
-                </div>
-              )}
+              <Pagination page={page} totalPages={totalPages} pageHref={pageHref} />
             </>
           ) : (
             <p className="text-center text-brown-muted mt-10">

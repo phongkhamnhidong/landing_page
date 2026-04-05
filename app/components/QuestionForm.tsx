@@ -46,6 +46,8 @@ export default function QuestionForm() {
         </div>
       ) : (
         <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
+          {/* Honeypot — hidden from real users, bots fill this in */}
+          <input name="website" type="text" tabIndex={-1} autoComplete="off" aria-hidden="true" className="hidden" />
           <div>
             <label className="block text-xs font-semibold text-navy mb-1.5">
               Tên của bạn <span className="text-brown-muted/50 font-normal">(không bắt buộc)</span>
