@@ -1,12 +1,13 @@
 import Link from "next/link"
-import PostCard from "./PostCard"
 import SectionHeader from "./SectionHeader"
+import ShuffledPostGrid from "./ShuffledPostGrid"
 
 type Post = {
   title?: string
   slug?: string
   mainImage?: { asset?: unknown; alt?: string }
   publishedAt?: string
+  categoryTitle?: string
 }
 
 type Props = { posts?: Post[] }
@@ -18,9 +19,7 @@ export default function LatestNewsSection({ posts }: Props) {
     <section className="py-20 bg-beige">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeader label="Mới nhất" title="Tin Tức" />
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
-          {posts.map((post) => <PostCard key={post.slug} post={post} />)}
-        </div>
+        <ShuffledPostGrid posts={posts} show={3} />
         <div className="flex justify-center mt-10">
           <Link
             href="/tin-tuc"

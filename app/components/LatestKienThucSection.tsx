@@ -1,6 +1,6 @@
 import Link from "next/link"
-import PostCard from "./PostCard"
 import SectionHeader from "./SectionHeader"
+import ShuffledPostGrid from "./ShuffledPostGrid"
 
 type Post = {
   title?: string
@@ -19,9 +19,7 @@ export default function LatestKienThucSection({ posts }: Props) {
     <section className="py-20 bg-cream">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeader label="Y khoa" title="Kiến Thức Sức Khỏe" />
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
-          {posts.map((post) => <PostCard key={post.slug} post={post} />)}
-        </div>
+        <ShuffledPostGrid posts={posts} show={3} />
         <div className="flex justify-center mt-10">
           <Link
             href="/kien-thuc"
