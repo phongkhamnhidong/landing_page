@@ -1,3 +1,6 @@
+"use client"
+
+import { useMemo } from "react"
 import Link from "next/link"
 import SectionHeader from "./SectionHeader"
 
@@ -10,7 +13,17 @@ type FAQ = {
 type Props = { faqs?: FAQ[] }
 
 export default function LatestFAQSection({ faqs }: Props) {
-  if (!faqs || faqs.length === 0) return null
+  const shuffled = useMemo(() => {
+    if (!faqs || faqs.length === 0) return []
+    const copy = [...faqs]
+    for (let i = copy.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1))
+      ;[copy[i], copy[j]] = [copy[j], copy[i]]
+    }
+    return copy.slice(0, 3)
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  if (shuffled.length === 0) return null
 
   return (
     <section className="py-20 bg-white">
@@ -18,7 +31,7 @@ export default function LatestFAQSection({ faqs }: Props) {
         <SectionHeader label="Giải đáp" title="Hỏi Đáp" />
 
         <div className="space-y-4 max-w-3xl mx-auto mt-10">
-          {faqs.map((faq) => (
+          {shuffled.map((faq) => (
             <Link key={faq._id} href={`/hoi-dap/${faq._id}`} className="group block bg-white rounded-xl border border-border p-6 hover:border-gold/40 hover:shadow-sm transition-all">
               <div className="flex items-start gap-3">
                 <span className="text-gold font-serif text-xl leading-none mt-0.5">CH</span>

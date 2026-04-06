@@ -39,8 +39,8 @@ export const doctorQuery = `*[_type == "doctor"][0]{
   photo
 }`
 
-// Latest 3 kienThuc posts for homepage
-export const latestKienThucQuery = `*[_type == "post" && section == "kienThuc"] | order(publishedAt desc)[0...3]{
+// Latest 9 kienThuc posts for homepage (shuffled to 3 on client)
+export const latestKienThucQuery = `*[_type == "post" && section == "kienThuc"] | order(publishedAt desc)[0...9]{
   title,
   "slug": slug.current,
   mainImage,
@@ -48,8 +48,8 @@ export const latestKienThucQuery = `*[_type == "post" && section == "kienThuc"] 
   "categoryTitle": categories[0]->title
 }`
 
-// Latest 3 tinTuc posts for homepage
-export const latestTinTucQuery = `*[_type == "post" && section == "tinTuc"] | order(publishedAt desc)[0...3]{
+// Latest 9 tinTuc posts for homepage (shuffled to 3 on client)
+export const latestTinTucQuery = `*[_type == "post" && section == "tinTuc"] | order(publishedAt desc)[0...9]{
   title,
   "slug": slug.current,
   mainImage,
@@ -57,8 +57,8 @@ export const latestTinTucQuery = `*[_type == "post" && section == "tinTuc"] | or
   "categoryTitle": categories[0]->title
 }`
 
-// Latest 3 FAQs for homepage — extract plain text from first answer block
-export const latestFaqQuery = `*[_type == "faq" && (status == "answered" || !defined(status))] | order(publishedAt desc)[0...3]{
+// Latest 9 FAQs for homepage (shuffled to 3 on client)
+export const latestFaqQuery = `*[_type == "faq" && (status == "answered" || !defined(status))] | order(publishedAt desc)[0...9]{
   _id,
   question,
   "answer": pt::text(answer)
