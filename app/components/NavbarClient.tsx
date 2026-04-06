@@ -130,6 +130,10 @@ export default function NavbarClient({ clinicName, phone, categories, tinTucCate
               </button>
               {kienThucOpen && (
                 <div className="ml-4 mt-1 space-y-1">
+                  <Link href="/kien-thuc" onClick={() => setMobileOpen(false)}
+                    className="block px-4 py-1.5 text-xs font-semibold text-gold hover:text-navy hover:bg-beige rounded-lg transition-colors">
+                    Xem Tất Cả
+                  </Link>
                   {categories.map((cat) => (
                     <Link key={cat.slug} href={`/kien-thuc/${cat.slug}`} onClick={() => setMobileOpen(false)}
                       className="block px-4 py-1.5 text-xs text-brown-muted hover:text-navy hover:bg-beige rounded-lg transition-colors">
@@ -149,8 +153,12 @@ export default function NavbarClient({ clinicName, phone, categories, tinTucCate
                 <span>Tin Tức</span>
                 <ChevronIcon open={tinTucOpen} />
               </button>
-              {tinTucOpen && tinTucCategories.length > 0 && (
+              {tinTucOpen && (
                 <div className="ml-4 mt-1 space-y-1">
+                  <Link href="/tin-tuc" onClick={() => setMobileOpen(false)}
+                    className="block px-4 py-1.5 text-xs font-semibold text-gold hover:text-navy hover:bg-beige rounded-lg transition-colors">
+                    Xem Tất Cả
+                  </Link>
                   {tinTucCategories.map((cat) => (
                     <Link key={cat.slug} href={`/tin-tuc/${cat.slug}`} onClick={() => setMobileOpen(false)}
                       className="block px-4 py-1.5 text-xs text-brown-muted hover:text-navy hover:bg-beige rounded-lg transition-colors">
