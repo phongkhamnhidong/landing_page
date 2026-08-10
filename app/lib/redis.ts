@@ -4,7 +4,13 @@ const globalForRedis = global as unknown as { redisClient?: ReturnType<typeof cr
 
 function getClient() {
   if (!globalForRedis.redisClient) {
-    globalForRedis.redisClient = createClient({ url: process.env.REDIS_URL })
+    globalForRedis.redisClient = createClient({
+      url: process.env.REDIS_URL,
+      socket: {
+        connectTimeout: 2000,
+        reconnectStrategy: (retries) => (retries > 2 ? new Error("Redis unavailable") : retries * 200),
+      },
+    })
     globalForRedis.redisClient.on("error", (err) => console.error("Redis error:", err))
   }
   return globalForRedis.redisClient
