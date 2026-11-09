@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { legacyRedirects } from "./legacyRedirects";
 
 const nextConfig: NextConfig = {
   images: {
@@ -14,6 +15,8 @@ const nextConfig: NextConfig = {
   // to new Sanity slugs, so detail pages go to their section listing.
   async redirects() {
     return [
+      // Specific article / category / Q&A redirects first (generated list)
+      ...legacyRedirects,
       { source: "/home", destination: "/", permanent: true },
       { source: "/hinhanh", destination: "/", permanent: true },
       { source: "/gioithieu", destination: "/gioi-thieu", permanent: true },
