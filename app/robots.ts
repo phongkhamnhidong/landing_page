@@ -9,6 +9,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/studio/", "/studio"],
       },
     ],
-    sitemap: "https://phongkhamnhidong.vn/sitemap.xml",
+    sitemap: "https://www.phongkhamnhidong.com/sitemap.xml",
   }
 }

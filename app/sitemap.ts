@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next"
 import { client } from "@/sanity/lib/client"
 import { allPostSlugsQuery, allCategorySlugsQuery, allTinTucCategorySlugsQuery, allFaqQuery } from "@/app/lib/queries"
 
-const BASE_URL = "https://phongkhamnhidong.vn"
+const BASE_URL = "https://www.phongkhamnhidong.com"
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [postSlugs, kienThucCats, tinTucCats, faqs] = await Promise.all([
